@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rain Script</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0f172a;
+    font-family:Arial;
+    color:white;
+}
+
+header{
+    background:#111827;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:2px solid #38bdf8;
+}
+
+header h1{
+    color:#38bdf8;
+    font-size:32px;
+}
+
+.user-box{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:20px;
+    margin-bottom:20px;
+    box-shadow:0 0 15px rgba(0,0,0,0.4);
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    margin-top:10px;
+    background:#334155;
+    color:white;
+    font-size:15px;
+}
+
+textarea{
+    height:220px;
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    margin-top:10px;
+    background:#38bdf8;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#0ea5e9;
+}
+
+.auth-box{
+    max-width:450px;
+    margin:40px auto;
+}
+
+.script-card{
+    background:#1e293b;
+    border-radius:20px;
+    padding:20px;
+    margin-top:20px;
+    border-left:5px solid #38bdf8;
+}
+
+.script-card h3{
+    color:#38bdf8;
+    margin-bottom:10px;
+}
+
+.script-card pre{
+    background:#0f172a;
+    padding:15px;
+    border-radius:12px;
+    overflow:auto;
+    margin-top:10px;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.top-title{
+    margin-top:30px;
+    margin-bottom:15px;
+    font-size:28px;
+    color:#38bdf8;
+}
+
+.info{
+    color:#94a3b8;
+    margin-top:5px;
+    font-size:14px;
+}
+
+.copy-btn{
+    background:#22c55e;
+}
+
+.copy-btn:hover{
+    background:#16a34a;
+}
+
+.delete-btn{
+    background:#ef4444;
+}
+
+.delete-btn:hover{
+    background:#dc2626;
+}
+
+.hidden{
+    display:none;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:#94a3b8;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+
+    <h1>🌧 Rain Script</h1>
+
+    <div class="user-box">
+        <span id="welcomeText"></span>
+        <button onclick="logout()" id="logoutBtn" style="width:auto;padding:10px 20px;">
+            Logout
+        </button>
+    </div>
+
+</header>
+
+<div class="container">
+
+    <!-- LOGIN REGISTER -->
+
+    <div id="authSection" class="auth-box">
+
+        <div class="card">
+
+            <h2>🔐 Login</h2>
+
+            <input type="text" id="loginUser" placeholder="Username">
+            <input type="password" id="loginPass" placeholder="Password">
+
+            <button onclick="login()">Login</button>
+
+            <br><br>
+            <hr>
+            <br>
+
+            <h2>📝 Register</h2>
+
+            <input type="text" id="registerUser" placeholder="Username">
+            <input type="password" id="registerPass" placeholder="Password">
+
+            <button onclick="register()">Register</button>
+
+        </div>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div id="mainSection" class="hidden">
+
+        <div class="card">
+
+            <h2>📤 Share Script</h2>
+
+            <input type="text" id="scriptTitle" placeholder="Script title">
+
+            <textarea id="scriptContent" placeholder="Paste your script here..."></textarea>
+
+            <select id="scriptType">
+                <option value="community">🌍 Community Share</option>
+                <option value="admin">👑 Admin Share</option>
+            </select>
+
+            <button onclick="shareScript()">Share Script</button>
+
+        </div>
+
+        <h2 class="top-title">👑 Admin Share</h2>
+
+        <div id="adminScripts"></div>
+
+        <h2 class="top-title">🌍 Community Share</h2>
+
+        <div id="communityScripts"></div>
+
+    </div>
+
+</div>
+
+<footer>
+    Rain Script © 2026
+</footer>
+
+<script>
+
+//////////////////////////////////////////////////
+// DATABASE
+//////////////////////////////////////////////////
+
+let users = JSON.parse(localStorage.getItem("rain_users")) || [
+    {
+        username:"admin",
+        password:"admin123",
+        role:"admin"
+    }
+];
+
+let scripts = JSON.parse(localStorage.getItem("rain_scripts")) || [];
+
+let currentUser = JSON.parse(localStorage.getItem("rain_current_user"));
+
+//////////////////////////////////////////////////
+// SAVE
+//////////////////////////////////////////////////
+
+function saveData(){
+
+    localStorage.setItem(
+        "rain_users",
+        JSON.stringify(users)
+    );
+
+    localStorage.setItem(
+        "rain_scripts",
+        JSON.stringify(scripts)
+    );
+}
+
+//////////////////////////////////////////////////
+// REGISTER
+//////////////////////////////////////////////////
+
+function register(){
+
+    let username =
+        document.getElementById("registerUser").value.trim();
+
+    let password =
+        document.getElementById("registerPass").value.trim();
+
+    if(!username || !password){
+
+        alert("Please fill all fields");
+        return;
+    }
+
+    let exist = users.find(
+        u => u.username.toLowerCase() === username.toLowerCase()
+    );
+
+    if(exist){
+
+        alert("Username already exists");
+        return;
+    }
+
+    users.push({
+
+        username:username,
+        password:password,
+        role:"user"
+    });
+
+    saveData();
+
+    alert("Register success!");
+}
+
+//////////////////////////////////////////////////
+// LOGIN
+//////////////////////////////////////////////////
+
+function login(){
+
+    let username =
+        document.getElementById("loginUser").value.trim();
+
+    let password =
+        document.getElementById("loginPass").value.trim();
+
+    let user = users.find(
+        u =>
+        u.username === username &&
+        u.password === password
+    );
+
+    if(!user){
+
+        alert("Wrong username or password");
+        return;
+    }
+
+    currentUser = user;
+
+    localStorage.setItem(
+        "rain_current_user",
+        JSON.stringify(user)
+    );
+
+    loadUI();
+}
+
+//////////////////////////////////////////////////
+// LOGOUT
+//////////////////////////////////////////////////
+
+function logout(){
+
+    localStorage.removeItem("rain_current_user");
+
+    location.reload();
+}
+
+//////////////////////////////////////////////////
+// LOAD UI
+//////////////////////////////////////////////////
+
+function loadUI(){
+
+    if(currentUser){
+
+        document.getElementById("authSection")
+            .classList.add("hidden");
+
+        document.getElementById("mainSection")
+            .classList.remove("hidden");
+
+        document.getElementById("welcomeText")
+            .innerText =
+            "👋 " + currentUser.username;
+
+        renderScripts();
+
+    }else{
+
+        document.getElementById("authSection")
+            .classList.remove("hidden");
+
+        document.getElementById("mainSection")
+            .classList.add("hidden");
+
+        document.getElementById("logoutBtn")
+            .style.display = "none";
+    }
+}
+
+//////////////////////////////////////////////////
+// SHARE SCRIPT
+//////////////////////////////////////////////////
+
+function shareScript(){
+
+    if(!currentUser){
+
+        alert("Login first");
+        return;
+    }
+
+    let title =
+        document.getElementById("scriptTitle").value.trim();
+
+    let content =
+        document.getElementById("scriptContent").value.trim();
+
+    let type =
+        document.getElementById("scriptType").value;
+
+    if(!title || !content){
+
+        alert("Please fill all fields");
+        return;
+    }
+
+    if(type === "admin" &&
+        currentUser.role !== "admin"){
+
+        alert("Only admin can post Admin Share");
+        return;
+    }
+
+    let newScript = {
+
+        id:Date.now(),
+
+        title:title,
+
+        content:content,
+
+        type:type,
+
+        author:currentUser.username,
+
+        date:new Date().toLocaleString()
+    };
+
+    scripts.unshift(newScript);
+
+    saveData();
+
+    renderScripts();
+
+    document.getElementById("scriptTitle").value = "";
+    document.getElementById("scriptContent").value = "";
+
+    alert("Script shared!");
+}
+
+//////////////////////////////////////////////////
+// DELETE SCRIPT
+//////////////////////////////////////////////////
+
+function deleteScript(id){
+
+    let script = scripts.find(s => s.id === id);
+
+    if(!script) return;
+
+    if(
+        currentUser.role !== "admin" &&
+        script.author !== currentUser.username
+    ){
+
+        alert("You cannot delete this script");
+        return;
+    }
+
+    scripts = scripts.filter(s => s.id !== id);
+
+    saveData();
+
+    renderScripts();
+}
+
+//////////////////////////////////////////////////
+// COPY SCRIPT
+//////////////////////////////////////////////////
+
+function copyScript(content){
+
+    navigator.clipboard.writeText(content);
+
+    alert("Copied!");
+}
+
+//////////////////////////////////////////////////
+// ESCAPE HTML
+//////////////////////////////////////////////////
+
+function escapeHtml(text){
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+}
+
+//////////////////////////////////////////////////
+// RENDER
+//////////////////////////////////////////////////
+
+function renderScripts(){
+
+    let adminBox =
+        document.getElementById("adminScripts");
+
+    let communityBox =
+        document.getElementById("communityScripts");
+
+    adminBox.innerHTML = "";
+    communityBox.innerHTML = "";
+
+    scripts.forEach(script => {
+
+        let html = `
+
+        <div class="script-card">
+
+            <h3>${escapeHtml(script.title)}</h3>
+
+            <div class="info">
+                👤 ${escapeHtml(script.author)}
+                •
+                🕒 ${script.date}
+            </div>
+
+            <pre>${escapeHtml(script.content)}</pre>
+
+            <button
+                class="copy-btn"
+                onclick='copyScript(${JSON.stringify(script.content)})'
+            >
+                📋 Copy Script
+            </button>
+
+            <button
+                class="delete-btn"
+                onclick="deleteScript(${script.id})"
+            >
+                🗑 Delete
+            </button>
+
+        </div>
+
+        `;
+
+        if(script.type === "admin"){
+
+            adminBox.innerHTML += html;
+
+        }else{
+
+            communityBox.innerHTML += html;
+        }
+
+    });
+}
+
+//////////////////////////////////////////////////
+// START
+//////////////////////////////////////////////////
+
+loadUI();
+
+</script>
+
+</body>
+  </html>
