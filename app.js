@@ -1,11 +1,11 @@
-// ========================
-// RAIN SHARE FULL APP.JS
-// FIXED + OPTIMIZED
-// ========================
+// =========================
+// 🌧 RAIN SHARE APP.JS
+// FULL FIXED + OPTIMIZED
+// =========================
 
-// ========================
-// FIREBASE
-// ========================
+// =========================
+// FIREBASE CONFIG
+// =========================
 
 const firebaseConfig = {
 
@@ -35,17 +35,13 @@ measurementId:
 
 };
 
-// ========================
-// INIT
-// ========================
-
-if(!firebase.apps.length){
+// =========================
+// INIT FIREBASE
+// =========================
 
 firebase.initializeApp(
 firebaseConfig
 );
-
-}
 
 const auth =
 firebase.auth();
@@ -56,32 +52,9 @@ firebase.database();
 const storage =
 firebase.storage();
 
-// ========================
-// VARIABLES
-// ========================
-
-const ADMIN_EMAIL =
-"HCROBLOX@gmail.com";
-
-const bannedWords = [
-
-"grabify",
-"webhook",
-"cookie",
-"token",
-"steal",
-"logger",
-"hack",
-"rat",
-".exe"
-
-];
-
-// ========================
-// MENU
-// ========================
-
-function toggleMenu(){
+// =========================
+// ELEMENTS
+// =========================
 
 const sidebar =
 document.getElementById(
@@ -92,67 +65,24 @@ const overlay =
 document.getElementById(
 "overlay"
 );
-
-if(sidebar){
-
-sidebar.classList.toggle(
-"active"
-);
-
-}
-
-if(overlay){
-
-overlay.classList.toggle(
-"active"
-);
-
-}
-
-}
-
-function closeMenu(){
-
-const sidebar =
-document.getElementById(
-"sidebar"
-);
-
-const overlay =
-document.getElementById(
-"overlay"
-);
-
-if(sidebar){
-
-sidebar.classList.remove(
-"active"
-);
-
-}
-
-if(overlay){
-
-overlay.classList.remove(
-"active"
-);
-
-}
-
-}
-
-// ========================
-// LOADER
-// ========================
-
-window.addEventListener(
-"load",
-()=>{
 
 const loader =
 document.getElementById(
 "loader"
 );
+
+const music =
+document.getElementById(
+"bgMusic"
+);
+
+// =========================
+// LOADER FIX
+// =========================
+
+window.addEventListener(
+"load",
+()=>{
 
 if(loader){
 
@@ -171,81 +101,124 @@ loader.style.display =
 }
 );
 
-// ========================
-// NOTIFICATION
-// ========================
+// =========================
+// MENU SYSTEM
+// =========================
 
-function showNotification(text){
+function toggleMenu(){
 
-const old =
-document.querySelector(
-".notification"
+if(!sidebar) return;
+
+sidebar.classList.toggle(
+"active"
 );
 
-if(old){
+overlay.classList.toggle(
+"active"
+);
 
-old.remove();
+document.body.style.overflow =
+sidebar.classList.contains(
+"active"
+)
+?
+"hidden"
+:
+"auto";
 
 }
 
-const notify =
-document.createElement(
-"div"
+function closeMenu(){
+
+sidebar.classList.remove(
+"active"
 );
 
-notify.className =
-"notification";
-
-notify.innerText =
-text;
-
-document.body.appendChild(
-notify
+overlay.classList.remove(
+"active"
 );
 
-setTimeout(()=>{
-
-notify.remove();
-
-},3000);
+document.body.style.overflow =
+"auto";
 
 }
 
-// ========================
-// THEME
-// ========================
+// =========================
+// AUTO CLOSE SIDEBAR
+// =========================
+
+document.addEventListener(
+"click",
+(e)=>{
+
+if(
+window.innerWidth <= 768 &&
+sidebar.classList.contains(
+"active"
+)
+){
+
+if(
+!sidebar.contains(
+e.target
+)
+&&
+!e.target.classList.contains(
+"menuBtn"
+)
+){
+
+closeMenu();
+
+}
+
+}
+
+}
+);
+
+// =========================
+// ESC CLOSE
+// =========================
+
+document.addEventListener(
+"keydown",
+(e)=>{
+
+if(e.key === "Escape"){
+
+closeMenu();
+
+}
+
+}
+);
+
+// =========================
+// THEME SYSTEM
+// =========================
 
 function toggleTheme(){
 
 document.body.classList.toggle(
-"light"
+"lightMode"
 );
 
-if(
+const isLight =
 document.body.classList.contains(
-"light"
-)
-){
-
-localStorage.setItem(
-"theme",
-"light"
+"lightMode"
 );
 
-}else{
-
 localStorage.setItem(
 "theme",
+isLight
+?
+"light"
+:
 "dark"
 );
 
 }
-
-}
-
-window.addEventListener(
-"load",
-()=>{
 
 if(
 localStorage.getItem(
@@ -254,69 +227,55 @@ localStorage.getItem(
 ){
 
 document.body.classList.add(
-"light"
+"lightMode"
 );
 
 }
 
-}
-);
-
-// ========================
-// MUSIC
-// ========================
-
-const bgMusic =
-document.getElementById(
-"bgMusic"
-);
+// =========================
+// MUSIC SYSTEM
+// =========================
 
 function toggleMusic(){
 
-if(!bgMusic) return;
+if(!music) return;
 
-if(bgMusic.paused){
+if(music.paused){
 
-bgMusic.play();
+music.play();
 
 localStorage.setItem(
 "music",
 "on"
 );
 
-showNotification(
-"Music ON"
-);
-
 }else{
 
-bgMusic.pause();
+music.pause();
 
 localStorage.setItem(
 "music",
 "off"
 );
 
-showNotification(
-"Music OFF"
-);
-
 }
 
 }
 
-window.addEventListener(
+// AUTO PLAY FIX
+
+document.addEventListener(
 "click",
 ()=>{
 
 if(
-bgMusic &&
+music &&
 localStorage.getItem(
 "music"
 ) === "on"
 ){
 
-bgMusic.play();
+music.play();
 
 }
 
@@ -326,969 +285,481 @@ once:true
 }
 );
 
-// ========================
-// SECURITY
-// ========================
+// =========================
+// MOBILE FIX
+// =========================
 
-function containsBadWord(text){
+function mobileFix(){
 
-text = text.toLowerCase();
+document.body.style.maxWidth =
+"100%";
 
-return bannedWords.some(
-word =>
-text.includes(word)
-);
+document.body.style.overflowX =
+"hidden";
 
-}
-
-// ========================
-// REGISTER
-// ========================
-
-async function register(){
-
-const username =
-document.getElementById(
-"username"
-)?.value;
-
-const email =
-document.getElementById(
-"email"
-)?.value;
-
-const password =
-document.getElementById(
-"password"
-)?.value;
-
-if(
-!username ||
-!email ||
-!password
-){
-
-showNotification(
-"Fill all fields"
-);
-
-return;
-
-}
-
-try{
-
-const cred =
-await auth
-.createUserWithEmailAndPassword(
-email,
-password
-);
-
-await cred.user
-.updateProfile({
-
-displayName:
-username
-
-});
-
-await cred.user
-.sendEmailVerification();
-
-await db.ref(
-"users/" +
-cred.user.uid
+document.querySelectorAll(
+"img"
 )
+.forEach(img=>{
 
-.set({
+img.style.maxWidth =
+"100%";
 
-username:
-username,
-
-email:
-email,
-
-created:
-Date.now(),
-
-verified:false,
-
-followers:0
+img.style.height =
+"auto";
 
 });
 
-showNotification(
-"Register success"
-);
-
-setTimeout(()=>{
-
-location.href =
-"login.html";
-
-},1000);
-
-}catch(err){
-
-showNotification(
-err.message
-);
-
 }
 
-}
+mobileFix();
 
-// ========================
-// LOGIN
-// ========================
-
-async function login(){
-
-const email =
-document.getElementById(
-"email"
-)?.value;
-
-const password =
-document.getElementById(
-"password"
-)?.value;
-
-if(
-!email ||
-!password
-){
-
-showNotification(
-"Fill all fields"
+window.addEventListener(
+"resize",
+mobileFix
 );
 
-return;
-
-}
-
-try{
-
-await auth
-.signInWithEmailAndPassword(
-email,
-password
-);
-
-showNotification(
-"Login success"
-);
-
-setTimeout(()=>{
-
-location.href =
-"community.html";
-
-},1000);
-
-}catch(err){
-
-showNotification(
-err.message
-);
-
-}
-
-}
-
-// ========================
-// LOGOUT
-// ========================
-
-function logout(){
-
-auth.signOut();
-
-showNotification(
-"Logged out"
-);
-
-setTimeout(()=>{
-
-location.href =
-"index.html";
-
-},1000);
-
-}
-
-// ========================
-// VERIFY EMAIL
-// ========================
-
-async function verifyEmail(){
-
-if(auth.currentUser){
-
-await auth.currentUser
-.sendEmailVerification();
-
-showNotification(
-"Verification email sent"
-);
-
-}
-
-}
-
-// ========================
-// PROFILE
-// ========================
+// =========================
+// AUTH SYSTEM
+// =========================
 
 auth.onAuthStateChanged(
-user=>{
+(user)=>{
 
-const profile =
-document.getElementById(
-"profile"
-);
+const currentPage =
+window.location.pathname
+.split("/")
+.pop();
 
-if(profile){
+const protectedPages = [
+
+"community.html",
+"admin.html",
+"profile.html"
+
+];
+
+if(
+!user &&
+protectedPages.includes(
+currentPage
+)
+){
+
+window.location.href =
+"login.html";
+
+}
 
 if(user){
 
-profile.innerHTML =
-
-`
-
-<h1>
-
-👤 ${user.displayName}
-
-</h1>
-
-<p>
-
-📧 ${user.email}
-
-</p>
-
-<p>
-
-${user.emailVerified
-?
-"✅ Verified"
-:
-"❌ Not Verified"}
-
-</p>
-
-<button onclick="
-verifyEmail()
-">
-
-📧 Verify Email
-
-</button>
-
-<button onclick="
-logout()
-">
-
-🚪 Logout
-
-</button>
-
-`;
+console.log(
+"Logged in:",
+user.email
+);
 
 }else{
 
-location.href =
+console.log(
+"Not logged in"
+);
+
+}
+
+}
+);
+
+// =========================
+// REGISTER
+// =========================
+
+function register(){
+
+const email =
+document.getElementById(
+"registerEmail"
+)?.value;
+
+const password =
+document.getElementById(
+"registerPassword"
+)?.value;
+
+if(!email || !password){
+
+alert(
+"Please fill all fields."
+);
+
+return;
+
+}
+
+auth.createUserWithEmailAndPassword(
+email,
+password
+)
+.then((cred)=>{
+
+db.ref(
+"users/" + cred.user.uid
+).set({
+
+email: email,
+
+createdAt:
+Date.now()
+
+});
+
+alert(
+"Register success!"
+);
+
+window.location.href =
 "login.html";
 
-}
+})
+.catch(err=>{
 
-}
+alert(err.message);
 
 });
 
-// ========================
-// SHARE SCRIPT
-// ========================
+}
 
-async function shareScript(){
+// =========================
+// LOGIN
+// =========================
 
-if(!auth.currentUser){
+function login(){
 
-showNotification(
-"Login first"
+const email =
+document.getElementById(
+"loginEmail"
+)?.value;
+
+const password =
+document.getElementById(
+"loginPassword"
+)?.value;
+
+if(!email || !password){
+
+alert(
+"Please fill all fields."
 );
 
 return;
 
 }
 
-const title =
-document.getElementById(
-"title"
-)?.value;
-
-const description =
-document.getElementById(
-"description"
-)?.value;
-
-const content =
-document.getElementById(
-"content"
-)?.value;
-
-const keywords =
-document.getElementById(
-"keywords"
-)?.value;
-
-if(
-!title ||
-!description ||
-!content
-){
-
-showNotification(
-"Fill all fields"
-);
-
-return;
-
-}
-
-if(
-containsBadWord(content)
-){
-
-showNotification(
-"Dangerous script blocked"
-);
-
-return;
-
-}
-
-const imageFile =
-document.getElementById(
-"image"
-)?.files[0];
-
-let imageURL = "";
-
-try{
-
-if(imageFile){
-
-const imageRef =
-storage.ref(
-
-"images/" +
-Date.now() +
-"_" +
-imageFile.name
-
-);
-
-await imageRef.put(
-imageFile
-);
-
-imageURL =
-await imageRef
-.getDownloadURL();
-
-}
-
-const id =
-Date.now();
-
-await db.ref(
-"scripts/" + id
+auth.signInWithEmailAndPassword(
+email,
+password
 )
+.then(()=>{
 
-.set({
+alert(
+"Login success!"
+);
 
-id:id,
+window.location.href =
+"community.html";
 
-title:title,
+})
+.catch(err=>{
 
-description:
-description,
-
-content:content,
-
-keywords:keywords,
-
-image:imageURL,
-
-likes:0,
-
-views:0,
-
-pinned:false,
-
-trending:false,
-
-author:
-auth.currentUser
-.displayName,
-
-authorEmail:
-auth.currentUser.email,
-
-time:
-new Date()
-.toLocaleString()
+alert(err.message);
 
 });
 
-showNotification(
-"Script shared"
+}
+
+// =========================
+// LOGOUT
+// =========================
+
+function logout(){
+
+auth.signOut()
+.then(()=>{
+
+alert(
+"Logged out!"
 );
 
-}catch(err){
+window.location.href =
+"login.html";
 
-showNotification(
+})
+.catch(err=>{
+
+alert(
 err.message
 );
 
-}
-
-}
-
-// ========================
-// COPY
-// ========================
-
-function copyScript(text){
-
-navigator.clipboard
-.writeText(text);
-
-showNotification(
-"Copied"
-);
-
-}
-
-// ========================
-// LIKE
-// ========================
-
-async function likeScript(id){
-
-const ref =
-db.ref(
-"scripts/" + id
-);
-
-const snapshot =
-await ref.once("value");
-
-const data =
-snapshot.val();
-
-await ref.update({
-
-likes:
-(data.likes || 0)+1
-
 });
 
 }
 
-// ========================
-// DELETE
-// ========================
+// =========================
+// PROFILE SYSTEM
+// =========================
 
-function deleteScript(id){
+function loadProfile(){
 
-if(
-confirm(
-"Delete script?"
-)
-){
+const user =
+auth.currentUser;
 
-db.ref(
-"scripts/" + id
-).remove();
+if(!user) return;
 
-showNotification(
-"Deleted"
+const profileEmail =
+document.getElementById(
+"profileEmail"
 );
+
+if(profileEmail){
+
+profileEmail.innerText =
+user.email;
 
 }
 
 }
 
-// ========================
-// REPORT
-// ========================
-
-function reportScript(id){
-
-const reason =
-prompt(
-"Why report this script?"
-);
-
-if(!reason) return;
-
-db.ref(
-"reports/" + id
-)
-
-.push({
-
-reason:reason,
-
-reporter:
-auth.currentUser
-?
-auth.currentUser.email
-:
-"Guest",
-
-time:
-new Date()
-.toLocaleString()
-
-});
-
-showNotification(
-"Report sent"
-);
-
-}
-
-// ========================
-// SEARCH
-// ========================
+// =========================
+// SCRIPT SEARCH
+// =========================
 
 function searchScripts(){
 
 const input =
 document.getElementById(
 "search"
-)?.value
-.toLowerCase();
-
-document
-.querySelectorAll(".script")
-
-.forEach(script=>{
-
-if(
-script.innerText
-.toLowerCase()
-.includes(input)
-){
-
-script.style.display =
-"block";
-
-}else{
-
-script.style.display =
-"none";
-
-}
-
-});
-
-}
-
-// ========================
-// COMMENTS
-// ========================
-
-function sendComment(id){
-
-const input =
-document.getElementById(
-"comment-" + id
 );
 
 if(!input) return;
 
-const text =
-input.value;
+const filter =
+input.value.toLowerCase();
 
-if(!text) return;
+const scripts =
+document.querySelectorAll(
+".script"
+);
+
+scripts.forEach(script=>{
+
+const text =
+script.innerText.toLowerCase();
+
+script.style.display =
+text.includes(filter)
+?
+"block"
+:
+"none";
+
+});
+
+}
+
+// =========================
+// LIKE ANTI SPAM FIX
+// =========================
+
+async function likeScript(
+scriptId
+){
+
+const user =
+auth.currentUser;
+
+if(!user){
+
+alert(
+"Login required!"
+);
+
+return;
+
+}
+
+const likeRef =
+db.ref(
+`likes/${scriptId}/${user.uid}`
+);
+
+const snapshot =
+await likeRef.once(
+"value"
+);
+
+if(snapshot.exists()){
+
+alert(
+"You already liked this script."
+);
+
+return;
+
+}
+
+await likeRef.set(true);
+
+const countRef =
+db.ref(
+`scripts/${scriptId}/likes`
+);
+
+countRef.transaction(
+(count)=>{
+
+return (count || 0) + 1;
+
+});
+
+}
+
+// =========================
+// REPORT SYSTEM
+// =========================
+
+function reportScript(
+scriptId
+){
+
+const user =
+auth.currentUser;
+
+if(!user){
+
+alert(
+"Login required!"
+);
+
+return;
+
+}
 
 db.ref(
-"comments/" + id
-)
+"reports"
+).push({
 
-.push({
+scriptId:
+scriptId,
 
 user:
-auth.currentUser
-?
-auth.currentUser.displayName
-:
-"Guest",
+user.uid,
 
-text:text,
-
-time:
-new Date()
-.toLocaleString()
+createdAt:
+Date.now()
 
 });
 
-input.value = "";
+alert(
+"Report submitted!"
+);
 
 }
 
-function loadComments(id){
+// =========================
+// SCRIPT STATS
+// =========================
+
+function loadStats(){
+
+const totalScripts =
+document.getElementById(
+"totalScripts"
+);
+
+const totalUsers =
+document.getElementById(
+"totalUsers"
+);
+
+const totalReports =
+document.getElementById(
+"totalReports"
+);
+
+if(totalScripts){
 
 db.ref(
-"comments/" + id
-)
-
-.on("value",snap=>{
-
-let html = "";
-
-snap.forEach(child=>{
-
-const c =
-child.val();
-
-html +=
-
-`
-
-<div class="comment">
-
-<b>
-
-${c.user}
-
-</b>
-
-<p>
-
-${c.text}
-
-</p>
-
-</div>
-
-`;
-
-});
-
-const box =
-document.getElementById(
-"comments-" + id
-);
-
-if(box){
-
-box.innerHTML =
-html;
-
-}
-
-});
-
-}
-
-// ========================
-// LOAD SCRIPTS
-// ========================
-
-if(
-document.getElementById(
 "scripts"
 )
-){
+.on(
+"value",
+snap=>{
 
-db.ref("scripts")
-.on("value",snap=>{
+totalScripts.innerText =
+snap.numChildren();
 
-let html = "";
-
-snap.forEach(child=>{
-
-const script =
-child.val();
-
-html +=
-
-`
-
-<div class="script">
-
-<h2>
-
-${script.pinned
-?
-"📌"
-:
-""}
-
-${script.trending
-?
-"🔥"
-:
-""}
-
-${script.title}
-
-</h2>
-
-<p>
-
-👤 ${script.author}
-
-</p>
-
-<p>
-
-🕒 ${script.time}
-
-</p>
-
-<p>
-
-🏷 ${script.keywords || ""}
-
-</p>
-
-<p>
-
-👀 ${script.views || 0}
-views
-
-</p>
-
-<p>
-
-${script.description}
-
-</p>
-
-${
-script.image
-?
-`
-<img
-src="${script.image}"
-class="scriptImage">
-`
-:
-""
 }
-
-<pre>
-
-${script.content}
-
-</pre>
-
-<div class="scriptButtons">
-
-<button onclick="
-copyScript(
-\`${script.content}\`
-)
-">
-
-📋 Copy
-
-</button>
-
-<button onclick="
-likeScript(
-'${script.id}'
-)
-">
-
-❤️ ${script.likes || 0}
-
-</button>
-
-<button onclick="
-reportScript(
-'${script.id}'
-)
-">
-
-🚨 Report
-
-</button>
-
-${
-auth.currentUser &&
-auth.currentUser.email ===
-ADMIN_EMAIL
-?
-`
-
-<button onclick="
-deleteScript(
-'${script.id}'
-)
-">
-
-🗑 Delete
-
-</button>
-
-`
-:
-""
-}
-
-</div>
-
-<div id="
-comments-${script.id}
-">
-
-</div>
-
-<input
-id="
-comment-${script.id}
-"
-placeholder="
-Comment...
-">
-
-<button onclick="
-sendComment(
-'${script.id}'
-)
-">
-
-💬 Send
-
-</button>
-
-</div>
-
-`;
-
-setTimeout(()=>{
-
-loadComments(
-script.id
 );
 
-},100);
+}
 
-});
+if(totalUsers){
 
-document.getElementById(
-"scripts"
-).innerHTML =
-html;
+db.ref(
+"users"
+)
+.on(
+"value",
+snap=>{
 
-});
+totalUsers.innerText =
+snap.numChildren();
+
+}
+);
 
 }
 
-// ========================
-// ADMIN REPORTS
-// ========================
+if(totalReports){
 
-if(
-document.getElementById(
+db.ref(
 "reports"
 )
-){
+.on(
+"value",
+snap=>{
 
-auth.onAuthStateChanged(
-user=>{
+totalReports.innerText =
+snap.numChildren();
 
-if(
-user &&
-user.email ===
-ADMIN_EMAIL
-){
-
-db.ref("reports")
-.on("value",snap=>{
-
-let html = "";
-
-snap.forEach(child=>{
-
-child.forEach(r=>{
-
-const report =
-r.val();
-
-html +=
-
-`
-
-<div class="script">
-
-<h2>
-
-🚨 Report
-
-</h2>
-
-<p>
-
-${report.reason}
-
-</p>
-
-<p>
-
-${report.reporter}
-
-</p>
-
-<p>
-
-${report.time}
-
-</p>
-
-</div>
-
-`;
-
-});
-
-});
-
-document.getElementById(
-"reports"
-).innerHTML =
-html;
-
-});
-
-}else{
-
-document.body.innerHTML =
-
-`
-
-<h1 style="
-text-align:center;
-margin-top:100px;
-">
-
-❌ Access Denied
-
-</h1>
-
-`;
+}
+);
 
 }
 
-});
+}
 
-  }
+loadStats();
+
+// =========================
+// DISCORD
+// =========================
+
+function openDiscord(){
+
+window.open(
+"https://discord.gg/PWCa7YTdsa",
+"_blank"
+);
+
+}
+
+// =========================
+// SMOOTH SCROLL
+// =========================
+
+document.documentElement.style.scrollBehavior =
+"smooth";
+
+// =========================
+// END
+// =========================
