@@ -1,888 +1,623 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rain Share</title>
-<link rel="icon" href="logo.png">
 
-<meta property="og:image" content="logo.png">
+<meta http-equiv="X-UA-Compatible"
+content="IE=edge">
 
-<meta property="og:title" content="Rain Share">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Rain Share - Community Script Sharing
+</title>
+
+<meta name="description"
+content="Rain Share is a community website for sharing Roblox scripts safely and easily.">
+
+<meta name="keywords"
+content="Roblox, Scripts, Rain Share, Roblox Hub, Lua, Exploit">
+
+<meta name="author"
+content="HCROBLOX">
+
+<meta name="theme-color"
+content="#38bdf8">
+
+<meta property="og:title"
+content="Rain Share">
 
 <meta property="og:description"
 content="Community Script Sharing Website">
 
-<meta name="theme-color"
-content="#38bdf8">
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<meta property="og:image"
+content="logo.png">
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-scroll-behavior:smooth;
-}
+<meta property="og:type"
+content="website">
 
-body{
-background:#0f172a;
-color:white;
-overflow-x:hidden;
-}
+<meta property="og:url"
+content="https://hcroblox.github.io/Rain-share.github.io/">
 
-header{
-background:#111827;
-padding:30px;
-text-align:center;
-border-bottom:3px solid #38bdf8;
-position:sticky;
-top:0;
-z-index:999;
-backdrop-filter:blur(10px);
-}
+<link rel="icon"
+href="logo.png">
 
-header h1{
-font-size:42px;
-color:#38bdf8;
-}
+<link rel="apple-touch-icon"
+href="logo.png">
 
-header p{
-margin-top:10px;
-color:#cbd5e1;
-}
+<link rel="stylesheet"
+href="style.css">
 
-.container{
-width:92%;
-max-width:1100px;
-margin:auto;
-margin-top:30px;
-}
+<!-- FIREBASE -->
 
-.box{
-background:#1e293b;
-padding:25px;
-border-radius:20px;
-margin-bottom:25px;
-box-shadow:0 0 20px rgba(0,0,0,0.3);
-animation:fade 0.5s ease;
-}
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(10px);
-}
-to{
-opacity:1;
-transform:translateY(0px);
-}
-}
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-input,
-textarea,
-select{
-width:100%;
-padding:14px;
-margin-top:12px;
-border:none;
-border-radius:14px;
-background:#334155;
-color:white;
-}
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-textarea{
-height:130px;
-resize:none;
-}
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
-button{
-padding:12px 20px;
-border:none;
-border-radius:14px;
-background:#38bdf8;
-color:white;
-cursor:pointer;
-margin-top:15px;
-transition:0.2s;
-}
-
-button:hover{
-transform:scale(1.03);
-opacity:0.9;
-}
-
-.hidden{
-display:none;
-}
-
-.script{
-background:#334155;
-padding:20px;
-border-radius:18px;
-margin-top:20px;
-animation:fade 0.4s ease;
-}
-
-.script img{
-width:100%;
-border-radius:15px;
-margin-top:10px;
-}
-
-.copy-btn{
-background:#22c55e;
-}
-
-.like-btn{
-background:#ec4899;
-}
-
-.delete-btn{
-background:#ef4444;
-}
-
-.menu-btn{
-position:fixed;
-right:20px;
-top:20px;
-width:55px;
-height:55px;
-background:#38bdf8;
-border-radius:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-cursor:pointer;
-z-index:99999;
-}
-
-.sidebar{
-position:fixed;
-right:-320px;
-top:0;
-width:300px;
-height:100%;
-background:#111827;
-padding:25px;
-transition:0.3s;
-z-index:999999;
-overflow:auto;
-}
-
-.sidebar.active{
-right:0;
-}
-
-.sidebar button{
-width:100%;
-}
-
-.stats{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-margin-bottom:25px;
-}
-
-.stat{
-background:#334155;
-padding:20px;
-border-radius:18px;
-text-align:center;
-}
-
-footer{
-text-align:center;
-padding:40px;
-color:#94a3b8;
-}
-
-audio{
-width:100%;
-margin-top:15px;
-}
-
-.light{
-background:#f1f5f9;
-color:black;
-}
-
-.light .box,
-.light .script,
-.light .stat{
-background:white;
-color:black;
-}
-
-.light input,
-.light textarea{
-background:#e2e8f0;
-color:black;
-}
-
-@media(max-width:700px){
-.stats{
-grid-template-columns:1fr;
-}
-header h1{
-font-size:34px;
-}
-}
-</style>
 </head>
 
 <body>
 
-<div class="menu-btn" onclick="toggleMenu(event)">☰</div>
+<!-- LOADING -->
 
-<div class="sidebar" id="sidebar">
+<div id="loader">
 
-<h2>🌧 Rain Share</h2>
+<div class="loaderBox">
 
-<button onclick="scrollBox('authBox')">🔐 Login</button>
-<button onclick="scrollBox('shareBox')">📤 Share</button>
-<button onclick="scrollBox('adminScriptsBox')">👑 Admin</button>
-<button onclick="scrollBox('communityScriptsBox')">🌍 Community</button>
-<button onclick="scrollBox('profileBox')">👤 Profile</button>
-<button onclick="toggleTheme()">🌙 Dark/Light</button>
-<button onclick="logout()">🚪 Logout</button>
+<img src="logo.png"
+class="loaderLogo">
+
+<h1>
+🌧 Rain Share
+</h1>
+
+<p>
+Loading Website...
+</p>
+
+<div class="loadingBar">
+
+<div class="loadingFill">
 
 </div>
 
-<header>
+</div>
 
-<h1>🌧 Rain Share</h1>
-<p>Up load your script</p>
+</div>
+
+</div>
+
+<!-- MUSIC -->
+
+<audio id="bgMusic" loop>
+
+<source src="music.mp3"
+type="audio/mpeg">
+
+</audio>
+
+<!-- SIDEBAR -->
+
+<div id="sidebar">
+
+<div class="sidebarTop">
+
+<img src="logo.png"
+class="sidebarLogo">
+
+<h1>
+Rain Share
+</h1>
+
+</div>
+
+<div class="sidebarLinks">
+
+<a href="index.html">
+
+🏠 Home
+
+</a>
+
+<a href="community.html">
+
+🌎 Community
+
+</a>
+
+<a href="profile.html">
+
+👤 Profile
+
+</a>
+
+<a href="login.html">
+
+🔑 Login
+
+</a>
+
+<a href="register.html">
+
+📝 Register
+
+</a>
+
+<a href="admin.html">
+
+🛡 Admin
+
+</a>
+
+</div>
+
+<div class="sidebarButtons">
+
+<button onclick="toggleTheme()">
+
+🌗 Theme
+
+</button>
+
+<button onclick="toggleMusic()">
+
+🎵 Music
+
+</button>
+
+</div>
+
+</div>
+
+<!-- OVERLAY -->
+
+<div id="overlay"
+onclick="toggleMenu()">
+
+</div>
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+<div class="leftTopbar">
+
+<button class="menuBtn"
+onclick="toggleMenu()">
+
+☰
+
+</button>
+
+<h2>
+
+🌧 Rain Share
+
+</h2>
+
+</div>
+
+<div class="rightTopbar">
+
+<a href="login.html">
+
+<button>
+
+Login
+
+</button>
+
+</a>
+
+</div>
 
 </header>
 
-<div class="container">
+<!-- HERO -->
 
-<div class="stats">
+<section class="hero">
 
-<div class="stat">
-<h1 id="scriptCount">0</h1>
-<p>Scripts</p>
-</div>
+<div class="heroContent">
 
-<div class="stat">
-<h1 id="userCount">0</h1>
-<p>Users</p>
-</div>
+<h1>
 
-</div>
+Community Script Sharing
 
-<div class="box" id="authBox">
+</h1>
 
-<h2>🔐 Login</h2>
+<p>
 
-<input type="email" id="loginEmail" placeholder="Email">
+Discover and share Roblox scripts
+with the Rain Share community.
 
-<input type="password" id="loginPassword" placeholder="Password">
+</p>
 
-<button onclick="login()">Login</button>
+<div class="heroButtons">
 
-<hr style="margin-top:20px;margin-bottom:20px;">
+<a href="community.html">
 
-<h2>📝 Register</h2>
+<button class="mainBtn">
 
-<input type="text" id="registerUsername" placeholder="Username">
+🚀 Explore Scripts
 
-<input type="email" id="registerEmail" placeholder="Email">
+</button>
 
-<input type="password" id="registerPassword" placeholder="Password">
+</a>
 
-<button onclick="register()">Register</button>
+<a href="register.html">
 
-</div>
+<button class="secondBtn">
 
-<div class="hidden" id="mainBox">
+✨ Join Community
 
-<div class="box">
+</button>
 
-<input type="text" id="search" placeholder="🔎 Search realtime..." onkeyup="searchScripts()">
-
-</div>
-
-<div class="box" id="shareBox">
-
-<h2>📤 Share Script</h2>
-
-<select id="shareType">
-<option value="community">🌍 Community Share</option>
-<option value="admin">👑 Admin Share</option>
-</select>
-
-<input type="text" id="title" placeholder="Title">
-
-<input type="text" id="keywords" placeholder="Keywords">
-
-<textarea id="description" placeholder="Description"></textarea>
-
-<textarea id="content" placeholder="Script"></textarea>
-
-<input type="file" id="image">
-
-<input type="file" id="file">
-
-<button onclick="shareScript()">Share Script</button>
-
-<audio id="bgMusic" loop style="display:none;">
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-
-</div>
-
-<div class="box" id="profileBox">
-
-<h2>👤 Profile</h2>
-
-<p id="profileName"></p>
-<p id="profileEmail"></p>
-<p id="profileVerify"></p>
-
-<button onclick="verifyEmail()">📧 Verify Email</button>
-
-</div>
-
-<div class="box" id="adminScriptsBox">
-
-<h2>👑 Admin Scripts</h2>
-
-<div id="adminScripts"></div>
-
-</div>
-
-<div class="box" id="communityScriptsBox">
-
-<h2>🌍 Community Scripts</h2>
-
-<div id="communityScripts"></div>
-
-</div>
-
-<div class="box">
-
-<h2>ℹ️ About</h2>
-
-<p>Rain Share là website share script hiện đại dành cho cộng đồng Roblox.</p>
-
-</div>
-
-<div class="box">
-
-<h2>📜 Terms</h2>
-
-<p>Không upload virus, scam hoặc file độc hại.</p>
+</a>
 
 </div>
 
 </div>
 
+<div class="heroImage">
+
+<img src="logo.png">
+
 </div>
+
+</section>
+
+<!-- STATS -->
+
+<section class="statsSection">
+
+<div class="statCard">
+
+<h1 id="totalScripts">
+0
+</h1>
+
+<p>
+Scripts
+</p>
+
+</div>
+
+<div class="statCard">
+
+<h1 id="totalUsers">
+0
+</h1>
+
+<p>
+Users
+</p>
+
+</div>
+
+<div class="statCard">
+
+<h1 id="totalReports">
+0
+</h1>
+
+<p>
+Reports
+</p>
+
+</div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="features">
+
+<h1>
+
+🔥 Features
+
+</h1>
+
+<div class="featureGrid">
+
+<div class="featureCard">
+
+<h2>
+⚡ Fast
+</h2>
+
+<p>
+Realtime Firebase system
+</p>
+
+</div>
+
+<div class="featureCard">
+
+<h2>
+🔒 Safe
+</h2>
+
+<p>
+Dangerous scripts blocked
+</p>
+
+</div>
+
+<div class="featureCard">
+
+<h2>
+🌎 Community
+</h2>
+
+<p>
+Everyone can share scripts
+</p>
+
+</div>
+
+<div class="featureCard">
+
+<h2>
+🎵 Chill
+</h2>
+
+<p>
+Background music support
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SEARCH -->
+
+<section class="searchSection">
+
+<h1>
+
+🔍 Search Scripts
+
+</h1>
+
+<input
+type="text"
+id="search"
+placeholder="Search scripts..."
+onkeyup="searchScripts()"
+>
+
+</section>
+
+<!-- TRENDING -->
+
+<section class="trendingSection">
+
+<h1>
+
+🔥 Trending Scripts
+
+</h1>
+
+<div id="scripts">
+
+</div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="aboutSection">
+
+<h1>
+
+🌧 About Rain Share
+
+</h1>
+
+<p>
+
+Rain Share is a Roblox script
+sharing platform built for the
+community.
+
+Users can upload scripts,
+share files, comment,
+report dangerous content,
+and explore trending scripts.
+
+</p>
+
+</section>
+
+<!-- FOOTER -->
 
 <footer>
-Rain Share © 2026
-</footer>
 
-<script>
+<div class="footerTop">
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBeAAxMH9Z4LgUGpv_w8rhhLFfHykuc-vs",
-  authDomain: "rain-share.firebaseapp.com",
-  databaseURL: "https://rain-share-default-rtdb.firebaseio.com",
-  projectId: "rain-share",
-  storageBucket: "rain-share.firebasestorage.app",
-  messagingSenderId: "521377818281",
-  appId: "1:521377818281:web:a91156aff832c0d2a9abb8",
-  measurementId: "G-FZT51JLJTE"
-};
+<div>
 
-firebase.initializeApp(firebaseConfig);
+<h2>
 
-const auth = firebase.auth();
-const db = firebase.database();
-const storage = firebase.storage();
+🌧 Rain Share
 
-function register(){
+</h2>
 
-let username =
-document.getElementById("registerUsername").value;
+<p>
 
-let email =
-document.getElementById("registerEmail").value;
+Community Script Sharing
 
-let password =
-document.getElementById("registerPassword").value;
-
-if(!username || !email || !password){
-
-alert("Fill all fields");
-return;
-
-}
-
-auth
-.createUserWithEmailAndPassword(email,password)
-
-.then((cred)=>{
-cred.user.sendEmailVerification();
-cred.user.updateProfile({
-displayName:username
-});
-
-alert("Register success");
-
-})
-
-.catch(err=>{
-
-alert(err.message);
-
-});
-
-}
-
-function login(){
-
-let email =
-document.getElementById("loginEmail").value;
-
-let password =
-document.getElementById("loginPassword").value;
-
-auth
-.signInWithEmailAndPassword(email,password)
-
-.catch(err=>{
-
-alert(err.message);
-
-});
-
-}
-
-function logout(){
-
-auth.signOut();
-
-}
-
-function verifyEmail(){
-
-let user = auth.currentUser;
-
-user.sendEmailVerification()
-.then(()=>{
-
-alert("Verification email sent");
-
-});
-
-}
-
-auth.onAuthStateChanged(user=>{
-
-if(user){
-
-authBox.classList.add("hidden");
-mainBox.classList.remove("hidden");
-
-profileName.innerText =
-"👤 " + (user.displayName || "User");
-
-profileEmail.innerText =
-"📧 " + user.email;
-
-profileVerify.innerText =
-user.emailVerified
-?
-"✅ Verified"
-:
-"❌ Not verified";
-
-db.ref("users/" + user.uid).set({
-username:user.displayName || "User",
-email:user.email
-});
-
-}else{
-
-authBox.classList.remove("hidden");
-mainBox.classList.add("hidden");
-
-}
-
-});
-
-async function shareScript(){
-
-let type =
-document.getElementById("shareType").value;
-
-let title =
-document.getElementById("title").value;
-
-let keywords =
-document.getElementById("keywords").value;
-
-let description =
-document.getElementById("description").value;
-
-let content =
-document.getElementById("content").value;
-
-if(!title || !keywords || !description || !content){
-
-alert("Fill required fields");
-return;
-
-}
-
-let imageFile =
-document.getElementById("image").files[0];
-
-let fileFile =
-document.getElementById("file").files[0];
-
-let imageURL = "";
-let fileURL = "";
-
-if(imageFile){
-
-const imageRef =
-storage.ref(
-"images/" + Date.now() + "_" + imageFile.name
-);
-
-await imageRef.put(imageFile);
-
-imageURL =
-await imageRef.getDownloadURL();
-
-}
-
-if(fileFile){
-
-const fileRef =
-storage.ref(
-"files/" + Date.now() + "_" + fileFile.name
-);
-
-await fileRef.put(fileFile);
-
-fileURL =
-await fileRef.getDownloadURL();
-
-}
-
-let id = Date.now();
-
-db.ref("scripts/" + id).set({
-
-id:id,
-type:type,
-title:title,
-keywords:keywords,
-description:description,
-content:content,
-image:imageURL,
-file:fileURL,
-likes:0,
-views:0,
-author:auth.currentUser.displayName,
-time:new Date().toLocaleString()
-
-});
-
-alert("Script shared");
-
-}
-
-db.ref("scripts").on("value",snapshot=>{
-
-adminScripts.innerHTML = "";
-communityScripts.innerHTML = "";
-
-let total = 0;
-
-snapshot.forEach(child=>{
-
-total++;
-
-let script = child.val();
-
-let html = `
-
-<div class="script">
-
-<h3>${script.title}</h3>
-
-<p>👤 ${script.author}</p>
-
-<p>🏷 ${script.keywords}</p>
-
-<p>🕒 ${script.time}</p>
-
-<p>${script.description}</p>
-
-${script.image ?
-`<img src="${script.image}">`
-:
-``}
-
-<pre>${escapeHTML(script.content)}</pre>
-
-<button class="copy-btn"
-onclick='copyScript(${JSON.stringify(script.content)})'>
-📋 Copy
-</button>
-
-<button class="like-btn"
-onclick='likeScript(${script.id})'>
-❤️ ${script.likes || 0}
-</button>
-
-${auth.currentUser &&
-auth.currentUser.email &&
-auth.currentUser.email.toLowerCase() === "hcroblox@gmail.com"
-?
-`
-<button class="delete-btn"
-onclick='deleteScript(${script.id})'>
-🗑 Delete
-</button>
-`
-:
-``}
-
-${script.file ?
-`
-<br>
-<a href="${script.file}" target="_blank">
-<button>⬇ Download File</button>
-</a>
-`
-:
-``}
+</p>
 
 </div>
 
-`;
+<div class="footerLinks">
 
-if(script.type === "admin"){
+<a href="index.html">
 
-adminScripts.innerHTML += html;
+Home
 
-}else{
+</a>
 
-communityScripts.innerHTML += html;
+<a href="community.html">
 
-}
+Community
 
-});
+</a>
 
-scriptCount.innerText = total;
+<a href="login.html">
 
-});
+Login
 
-db.ref("users").on("value",snapshot=>{
+</a>
 
-userCount.innerText =
-snapshot.numChildren();
+<a href="register.html">
 
-});
+Register
 
-function likeScript(id){
+</a>
 
-db.ref("scripts/" + id)
-.once("value")
-.then(snapshot=>{
+</div>
 
-let data = snapshot.val();
+</div>
 
-db.ref("scripts/" + id + "/likes")
-.set((data.likes || 0)+1);
+<hr>
 
-});
+<div class="footerBottom">
 
-}
+<p>
 
-function deleteScript(id){
+© 2026 Rain Share
 
-if(
-auth.currentUser &&
-auth.currentUser.email.toLowerCase() === "hcroblox@gmail.com"
-){
+</p>
 
-db.ref("scripts/" + id)
-.remove()
-.then(()=>{
+<p>
 
-alert("Deleted");
+Powered by HCROBLOX
 
-})
-.catch(err=>{
+</p>
 
-alert(err.message);
+</div>
 
-});
+</footer>
 
-}else{
+<!-- FLOAT BUTTON -->
 
-alert("Admin only");
+<button id="scrollTopBtn">
 
-}
+⬆
 
-}
+</button>
 
-function copyScript(text){
+<!-- APP -->
 
-navigator.clipboard.writeText(text);
+<script src="app.js"></script>
 
-alert("Copied");
-
-}
-
-function searchScripts(){
-
-let input =
-document.getElementById("search")
-.value.toLowerCase();
-
-document.querySelectorAll(".script")
-.forEach(script=>{
-
-if(
-script.innerText
-.toLowerCase()
-.includes(input)
-){
-
-script.style.display = "block";
-
-}else{
-
-script.style.display = "none";
-
-}
-
-});
-
-}
-
-function toggleMenu(event){
-
-event.stopPropagation();
-
-sidebar.classList.toggle("active");
-
-}
-
-document.addEventListener("click",function(e){
-
-if(
-sidebar.classList.contains("active") &&
-!sidebar.contains(e.target) &&
-!document.querySelector(".menu-btn")
-.contains(e.target)
-){
-
-sidebar.classList.remove("active");
-
-}
-
-});
-
-function scrollBox(id){
-
-document.getElementById(id)
-.scrollIntoView();
-
-sidebar.classList.remove("active");
-
-}
-
-function toggleTheme(){
-
-document.body.classList.toggle("light");
-
-}
-
-function escapeHTML(text){
-
-return String(text)
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;");
-
-}
-
-</script>
-<audio id="bgMusic" autoplay loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<style>
-#bgMusic{
-display:none;
-}
-</style>
+<!-- AUTO MUSIC -->
 
 <script>
-<audio id="bgMusic" autoplay loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
 
-<style>
-#bgMusic{
-display:none;
-}
-</style>
-
-<script>
-<audio id="bgMusic" loop style="display:none;">
-<source src="./music.mp3" type="audio/mpeg">
-</audio>
-
-<script>
+document.addEventListener(
+"click",
+()=>{
 
 const music =
-document.getElementById("bgMusic");
+document.getElementById(
+"bgMusic"
+);
 
-function startMusic(){
-
-music.volume = 0.5;
+if(music){
 
 music.play();
 
-document.removeEventListener(
-"touchstart",
-startMusic
+}
+
+},
+{
+once:true
+}
 );
 
-document.removeEventListener(
-"click",
-startMusic
+// SCROLL TOP
+
+const scrollBtn =
+document.getElementById(
+"scrollTopBtn"
 );
+
+window.onscroll = ()=>{
+
+if(
+document.body.scrollTop > 200 ||
+document.documentElement.scrollTop > 200
+){
+
+scrollBtn.style.display =
+"flex";
+
+}else{
+
+scrollBtn.style.display =
+"none";
 
 }
 
-document.addEventListener(
-"touchstart",
-startMusic
-);
+};
 
-document.addEventListener(
-"click",
-startMusic
-);
+scrollBtn.onclick = ()=>{
+
+window.scrollTo({
+
+top:0,
+behavior:"smooth"
+
+});
+
+};
+
+// STATS
+
+db.ref("scripts")
+.on("value",snap=>{
+
+document.getElementById(
+"totalScripts"
+).innerText =
+snap.numChildren();
+
+});
+
+db.ref("users")
+.on("value",snap=>{
+
+document.getElementById(
+"totalUsers"
+).innerText =
+snap.numChildren();
+
+});
+
+db.ref("reports")
+.on("value",snap=>{
+
+document.getElementById(
+"totalReports"
+).innerText =
+snap.numChildren();
+
+});
 
 </script>
+
 </body>
   </html>
