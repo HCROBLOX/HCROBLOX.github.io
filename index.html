@@ -5,47 +5,23 @@
 
 <meta charset="UTF-8">
 
-<meta http-equiv="X-UA-Compatible"
-content="IE=edge">
-
-<meta name="viewport"
+<meta
+name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 <title>
 
-Rain Share - Community Script Sharing
+Rain Share
 
 </title>
 
-<meta name="description"
-content="Rain Share is a community script sharing website for Roblox users.">
-
-<meta name="keywords"
-content="Roblox, Scripts, Lua, Rain Share, Roblox Scripts">
-
-<meta name="author"
-content="HCROBLOX">
-
-<meta name="theme-color"
-content="#38bdf8">
-
-<meta property="og:title"
-content="Rain Share">
-
-<meta property="og:description"
-content="Community Roblox Script Sharing Website">
-
-<meta property="og:image"
-content="logo.png">
-
-<meta property="og:type"
-content="website">
-
-<link rel="icon"
-href="logo.png">
-
-<link rel="stylesheet"
+<link
+rel="stylesheet"
 href="style.css">
+
+<link
+rel="icon"
+href="logo.png">
 
 <!-- FIREBASE -->
 
@@ -69,30 +45,13 @@ href="style.css">
 
 <img
 src="logo.png"
-style="
-width:100px;
-margin-bottom:20px;
-">
+class="smallLogo">
 
 <h1>
 
 🌧 Rain Share
 
 </h1>
-
-<p>
-
-Loading Website...
-
-</p>
-
-<div class="loadingBar">
-
-<div class="loadingFill">
-
-</div>
-
-</div>
 
 </div>
 
@@ -116,77 +75,69 @@ onclick="closeMenu()">
 
 </h1>
 
-<a href="index.html">
+<div
+class="sidebarBtn"
+onclick="window.location.href='community.html'">
 
-<button>
+🌎 Community Share
 
-🏠 Home
+</div>
 
-</button>
+<div
+class="sidebarBtn"
+onclick="window.location.href='admin.html'">
 
-</a>
+🛡 Admin Share
 
-<a href="community.html">
+</div>
 
-<button>
-
-🌎 Community
-
-</button>
-
-</a>
-
-<a href="profile.html">
-
-<button>
-
-👤 Profile
-
-</button>
-
-</a>
-
-<a href="login.html">
-
-<button>
+<div
+class="sidebarBtn"
+onclick="window.location.href='login.html'">
 
 🔑 Login
 
-</button>
+</div>
 
-</a>
+<div
+class="sidebarBtn"
+onclick="window.location.href='register.html'">
 
-<a href="register.html">
+✨ Register
 
-<button>
+</div>
 
-📝 Register
+<div
+class="sidebarBtn"
+onclick="window.location.href='profile.html'">
 
-</button>
+👤 Profile
 
-</a>
+</div>
 
-<a href="admin.html">
-
-<button>
-
-🛡 Admin
-
-</button>
-
-</a>
-
-<button onclick="toggleTheme()">
+<div
+class="sidebarBtn"
+onclick="toggleTheme()">
 
 🌗 Theme
 
-</button>
+</div>
 
-<button onclick="toggleMusic()">
+<div
+class="sidebarBtn"
+onclick="toggleMusic()">
 
 🎵 Music
 
-</button>
+</div>
+
+<div
+class="sidebarBtn"
+onclick="logout()">
+
+🚪 Logout
+
+</div>
 
 </div>
 
@@ -202,11 +153,19 @@ onclick="toggleMenu()">
 
 </button>
 
+<div class="topbarLogo">
+
+<img
+src="logo.png"
+class="topLogo">
+
 <h2>
 
-🌧 Rain Share
+Rain Share
 
 </h2>
+
+</div>
 
 </header>
 
@@ -222,285 +181,105 @@ type="audio/mpeg">
 
 </audio>
 
-<!-- HERO -->
+<!-- MAIN -->
 
-<section class="hero">
+<section class="mainMenu">
+
+<!-- COMMUNITY -->
+
+<div
+class="menuCard"
+onclick="window.location.href='community.html'">
 
 <h1>
 
-Community Script Sharing
+🌎 Community Share
 
 </h1>
 
 <p>
 
-Discover and share Roblox scripts
-with the Rain Share community.
+Explore community shared scripts.
 
 </p>
-
-<div class="heroButtons">
-
-<a href="community.html">
 
 <button>
 
-🚀 Explore Scripts
+Open
 
 </button>
 
-</a>
-
-<a href="register.html">
-
-<button>
-
-✨ Join Community
-
-</button>
-
-</a>
-
 </div>
 
-</section>
-
-<!-- FEATURES -->
-
-<section
-style="
-padding:20px;
-">
-
-<h1
-style="
-text-align:center;
-margin-bottom:30px;
-">
-
-🔥 Features
-
-</h1>
+<!-- DISCORD -->
 
 <div
-style="
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-">
-
-<div class="script">
-
-<h2>
-
-⚡ Fast
-
-</h2>
-
-<p>
-
-Realtime Firebase Database
-
-</p>
-
-</div>
-
-<div class="script">
-
-<h2>
-
-🔒 Secure
-
-</h2>
-
-<p>
-
-Dangerous scripts blocked
-
-</p>
-
-</div>
-
-<div class="script">
-
-<h2>
-
-🌎 Community
-
-</h2>
-
-<p>
-
-Upload and share scripts
-
-</p>
-
-</div>
-
-<div class="script">
-
-<h2>
-
-🎵 Chill
-
-</h2>
-
-<p>
-
-Background music support
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- SEARCH -->
-
-<section class="searchSection">
-
-<input
-type="text"
-id="search"
-placeholder="Search scripts..."
-onkeyup="searchScripts()"
->
-
-</section>
-
-<!-- TRENDING -->
-
-<section
-style="
-padding:20px;
-">
-
-<h1
-style="
-margin-bottom:20px;
-">
-
-🔥 Trending Scripts
-
-</h1>
-
-<div id="scripts">
-
-</div>
-
-</section>
-
-<!-- STATS -->
-
-<section
-style="
-padding:20px;
-">
-
-<h1
-style="
-text-align:center;
-margin-bottom:30px;
-">
-
-📊 Website Stats
-
-</h1>
-
-<div
-style="
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-">
-
-<div class="script">
-
-<h1 id="totalScripts">
-
-0
-
-</h1>
-
-<p>
-
-Scripts Uploaded
-
-</p>
-
-</div>
-
-<div class="script">
-
-<h1 id="totalUsers">
-
-0
-
-</h1>
-
-<p>
-
-Registered Users
-
-</p>
-
-</div>
-
-<div class="script">
-
-<h1 id="totalReports">
-
-0
-
-</h1>
-
-<p>
-
-Reports Sent
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- ABOUT -->
-
-<section
-style="
-padding:20px;
-">
-
-<div class="script">
+class="menuCard"
+onclick="window.open('https://discord.gg/PWCa7YTdsa')">
 
 <h1>
 
-🌧 About Rain Share
+💬 Join Discord
 
 </h1>
 
-<p
-style="
-margin-top:20px;
-line-height:1.8;
-">
+<p>
 
-Rain Share is a Roblox script
-sharing platform built for the
-community.
+Join Sever Discord
 
-Users can upload scripts,
-share images,
-comment,
-like scripts,
-report dangerous content,
-and discover trending scripts.
+</p>
+
+<button>
+
+Join
+
+</button>
+
+</div>
+
+<!-- RULES -->
+
+<div class="menuCard">
+
+<h1>
+
+📜 Rules
+
+</h1>
+
+<p>
+
+✅ No malicious scripts
+
+</p>
+
+<p>
+
+✅ Safe community only
+
+</p>
+
+<p>
+
+❌ No logger scripts
+
+</p>
+
+</div>
+
+<!-- WARNING -->
+
+<div class="menuCard">
+
+<h1>
+
+⚠ Warning
+
+</h1>
+
+<p>
+
+Use community scripts at your own risk.
 
 </p>
 
@@ -512,25 +291,9 @@ and discover trending scripts.
 
 <footer>
 
-<h2>
-
-🌧 Rain Share
-
-</h2>
-
 <p>
 
-Community Script Sharing Website
-
-</p>
-
-<p
-style="
-margin-top:10px;
-opacity:0.7;
-">
-
-Powered by HCROBLOX
+🌧 Rain Share
 
 </p>
 
@@ -539,93 +302,6 @@ Powered by HCROBLOX
 <!-- APP -->
 
 <script src="app.js"></script>
-
-<!-- EXTRA FIX -->
-
-<script>
-
-// AUTO PLAY FIX
-
-document.addEventListener(
-"click",
-()=>{
-
-const music =
-document.getElementById(
-"bgMusic"
-);
-
-if(
-music &&
-localStorage.getItem(
-"music"
-) === "on"
-){
-
-music.play();
-
-}
-
-},
-{
-once:true
-}
-);
-
-// STATS
-
-db.ref("scripts")
-.on("value",snap=>{
-
-const el =
-document.getElementById(
-"totalScripts"
-);
-
-if(el){
-
-el.innerText =
-snap.numChildren();
-
-}
-
-});
-
-db.ref("users")
-.on("value",snap=>{
-
-const el =
-document.getElementById(
-"totalUsers"
-);
-
-if(el){
-
-el.innerText =
-snap.numChildren();
-
-}
-
-});
-
-db.ref("reports")
-.on("value",snap=>{
-
-const el =
-document.getElementById(
-"totalReports"
-);
-
-if(el){
-
-el.innerText =
-snap.numChildren();
-
-}
-
-});
-
-</script>
 
 </body>
   </html>
