@@ -836,30 +836,42 @@ display:none;
 </style>
 
 <script>
-<audio id="bgMusic" loop preload="auto" style="display:none;">
-<source src="music.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop style="display:none;">
+<source src="./music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-window.addEventListener("load", () => {
-
 const music =
 document.getElementById("bgMusic");
 
-function playMusic(){
+function startMusic(){
 
 music.volume = 0.5;
 
-music.play().catch(() => {});
+music.play();
 
-document.removeEventListener("click", playMusic);
+document.removeEventListener(
+"touchstart",
+startMusic
+);
+
+document.removeEventListener(
+"click",
+startMusic
+);
 
 }
 
-document.addEventListener("click", playMusic);
+document.addEventListener(
+"touchstart",
+startMusic
+);
 
-});
+document.addEventListener(
+"click",
+startMusic
+);
 
 </script>
 </body>
