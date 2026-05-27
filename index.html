@@ -1,36 +1,34 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-<title>Rain Share - Community Script Sharing</title>
-
-<meta name="description" content="Share and discover scripts with the Rain Share community.">
-
-<meta name="keywords" content="Rain Share, Roblox Script, Script Hub, Share Script">
-
-<meta name="author" content="HCROBLOX">
-
-<meta name="robots" content="index, follow">
-
-<meta property="og:title" content="Rain Share">
-
-<meta property="og:description" content="Community script sharing website">
-
-<meta property="og:type" content="website">
-
-<meta property="og:url" content="https://hcroblox.github.io/Rain-share.github.io/">
-
-<meta property="og:image" content="https://hcroblox.github.io/Rain-share.github.io/logo.png">
 
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="logo.png">
 
+<title>Rain Share</title>
+
+<meta name="description" content="Rain Share - Community Script Sharing Website">
+
+<meta name="keywords" content="Rain Share, Roblox Script, Script Hub">
+
+<link rel="icon" href="logo.png">
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <style>
-body{
+
+*{
     margin:0;
     padding:0;
+    box-sizing:border-box;
+}
+
+body{
     background:#0f172a;
     color:white;
     font-family:Arial;
@@ -38,35 +36,34 @@ body{
 
 header{
     background:#111827;
-    padding:30px;
+    padding:25px;
     text-align:center;
     border-bottom:3px solid #38bdf8;
-}
-
-.logo{
-    margin-top:10px;
+    position:sticky;
+    top:0;
+    z-index:999;
 }
 
 .logo img{
-    width:150px;
+    width:130px;
     border-radius:20px;
     box-shadow:0 0 25px #38bdf8;
 }
 
 header h1{
-    margin-top:20px;
-    font-size:40px;
     color:#38bdf8;
+    margin-top:15px;
+    font-size:42px;
 }
 
 header p{
     color:#cbd5e1;
-    font-size:18px;
+    margin-top:10px;
 }
 
 .container{
     width:90%;
-    max-width:900px;
+    max-width:1000px;
     margin:auto;
     margin-top:30px;
 }
@@ -76,103 +73,45 @@ header p{
     padding:25px;
     border-radius:20px;
     margin-bottom:25px;
-    box-shadow:0 0 15px rgba(0,0,0,0.4);
 }
 
 h2{
     color:#38bdf8;
+    margin-bottom:15px;
 }
 
-input{
+input,
+textarea,
+select{
     width:100%;
-    padding:12px;
-    margin-top:10px;
+    padding:14px;
+    margin-top:12px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     background:#334155;
     color:white;
+    font-size:15px;
 }
 
 textarea{
-    width:100%;
-    height:120px;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-    background:#334155;
-    color:white;
+    height:140px;
+    resize:none;
 }
 
 button{
-    margin-top:15px;
     padding:12px 25px;
     border:none;
     border-radius:12px;
     background:#38bdf8;
     color:white;
-    font-size:16px;
+    font-size:15px;
     cursor:pointer;
+    margin-top:15px;
+    transition:0.2s;
 }
 
 button:hover{
-    opacity:0.8;
-}
-
-.script-card{
-    background:#334155;
-    padding:20px;
-    border-radius:15px;
-    margin-top:15px;
-}
-
-.script-card h3{
-    margin:0;
-    color:#38bdf8;
-}
-
-.script-card pre{
-    white-space:pre-wrap;
-    margin-top:10px;
-    color:#e2e8f0;
-}
-
-.footer{
-    text-align:center;
-    padding:20px;
-    color:#94a3b8;
-}
-
-.hidden{
-    display:none;
-}
-
-select{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-    background:#334155;
-    color:white;
-}
-
-.script{
-    background:#334155;
-    padding:20px;
-    border-radius:15px;
-    margin-top:15px;
-}
-
-.script h3{
-    color:#38bdf8;
-    margin:0;
-}
-
-.script pre{
-    white-space:pre-wrap;
-    color:#e2e8f0;
-    margin-top:10px;
+    transform:scale(1.03);
 }
 
 .copy-btn{
@@ -182,18 +121,161 @@ select{
 
 .delete-btn{
     background:#ef4444;
+}
+
+.like-btn{
+    background:#f43f5e;
+}
+
+.script{
+    background:#334155;
+    padding:20px;
+    border-radius:15px;
+    margin-top:15px;
+    animation:fade 0.3s ease;
+}
+
+.script img{
+    width:100%;
+    border-radius:15px;
+    margin-top:10px;
+}
+
+.script h3{
+    color:#38bdf8;
+}
+
+.script p{
+    margin-top:10px;
+    color:#cbd5e1;
+}
+
+.script pre{
+    margin-top:15px;
+    white-space:pre-wrap;
+    color:#e2e8f0;
+}
+
+.hidden{
+    display:none;
+}
+
+.menu-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#38bdf8;
+    width:60px;
+    height:60px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    z-index:9999;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:280px;
+    height:100%;
+    background:#111827;
+    padding:20px;
+    transition:0.3s;
+    z-index:99999;
+}
+
+.sidebar.active{
+    right:0;
+}
+
+.sidebar h1{
+    color:#38bdf8;
+    margin-bottom:20px;
+}
+
+.sidebar button{
+    width:100%;
+    margin-top:10px;
+}
+
+.footer{
+    text-align:center;
+    color:#94a3b8;
+    padding:25px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.stat{
+    background:#334155;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.stat h1{
+    color:#38bdf8;
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(10px);
     }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
 </style>
+
 </head>
+
 <body>
+
+<div class="menu-btn" onclick="toggleMenu()">
+☰
+</div>
+
+<div class="sidebar" id="sidebar">
+
+<h1>🌧 Rain Share</h1>
+
+<button onclick="window.scrollTo(0,0)">
+🏠 Home
+</button>
+
+<button onclick="document.getElementById('shareBox').scrollIntoView()">
+📤 Share
+</button>
+
+<button onclick="document.getElementById('communityBox').scrollIntoView()">
+🌍 Scripts
+</button>
+
+<button onclick="logout()">
+🚪 Logout
+</button>
+
+</div>
 
 <header>
 
 <div class="logo">
-<img src="logo.png" width="150">
+
+<img src="logo.png">
+
 </div>
 
-<h1>🌧️ Rain Share</h1>
+<h1>🌧 Rain Share</h1>
 
 <p>Community Script Sharing Website</p>
 
@@ -201,111 +283,168 @@ select{
 
 <div class="container">
 
-    <!-- LOGIN REGISTER -->
+<div class="stats">
 
-    <div id="authBox" class="box">
+<div class="stat">
+<h1 id="scriptCount">0</h1>
+<p>Scripts</p>
+</div>
 
-        <h2>🔐 Login</h2>
+<div class="stat">
+<h1 id="userCount">0</h1>
+<p>Users</p>
+</div>
 
-        <input type="text" id="loginUser" placeholder="Username">
+</div>
 
-        <input type="password" id="loginPass" placeholder="Password">
+<!-- LOGIN -->
 
-        <button onclick="login()">Login</button>
+<div class="box" id="authBox">
 
-        <hr>
+<h2>🔐 Login</h2>
 
-        <h2>📝 Register</h2>
+<input type="text" id="loginUser" placeholder="Username">
 
-        <input type="text" id="registerUser" placeholder="Username">
+<input type="password" id="loginPass" placeholder="Password">
 
-        <input type="password" id="registerPass" placeholder="Password">
+<button onclick="login()">
+Login
+</button>
 
-        <button onclick="register()">Register</button>
+<hr style="margin-top:20px;margin-bottom:20px;">
 
-    </div>
+<h2>📝 Register</h2>
 
-    <!-- MAIN -->
+<input type="text" id="registerUser" placeholder="Username">
 
-    <div id="mainBox" class="hidden">
+<input type="password" id="registerPass" placeholder="Password">
 
-        <div class="box">
+<button onclick="register()">
+Register
+</button>
 
-            <h2>📤 Share Script</h2>
+</div>
 
-            <input type="text" id="title" placeholder="Script title">
+<!-- MAIN -->
 
-            <textarea id="content" placeholder="Paste script here..."></textarea>
+<div id="mainBox" class="hidden">
 
-            <select id="type">
-                <option value="community">🌍 Community Share</option>
-                <option value="admin">👑 Admin Share</option>
-            </select>
+<div class="box">
 
-            <button onclick="shareScript()">Share Script</button>
+<input type="text" id="search" placeholder="🔎 Search script realtime..." onkeyup="searchScript()">
 
-            <button onclick="logout()">Logout</button>
+</div>
 
-        </div>
+<div class="box" id="shareBox">
 
-        <div class="box">
+<h2>📤 Share Script</h2>
 
-            <h2>👑 Admin Share</h2>
+<input type="text" id="title" placeholder="Script title">
 
-            <div id="adminScripts"></div>
+<input type="text" id="keywords" placeholder="Keywords">
 
-        </div>
+<textarea id="description" placeholder="Description"></textarea>
 
-        <div class="box">
+<textarea id="content" placeholder="Paste script here"></textarea>
 
-            <h2>🌍 Community Share</h2>
+<input type="text" id="image" placeholder="Image URL (optional)">
 
-            <div id="communityScripts"></div>
+<input type="text" id="file" placeholder="File URL (optional)">
 
-        </div>
+<select id="type">
 
-    </div>
+<option value="community">
+🌍 Community Share
+</option>
+
+<option value="admin">
+👑 Admin Share
+</option>
+
+</select>
+
+<button onclick="shareScript()">
+Share Script
+</button>
+
+</div>
+
+<div class="box">
+
+<h2>👑 Admin Share</h2>
+
+<div id="adminScripts"></div>
+
+</div>
+
+<div class="box" id="communityBox">
+
+<h2>🌍 Community Share</h2>
+
+<div id="communityScripts"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+Rain Share © 2026
 
 </div>
 
 <script>
 
-let users = JSON.parse(localStorage.getItem("users")) || [
-    {
-        username:"admin",
-        password:"admin123",
-        role:"admin"
-    }
-];
+/* FIREBASE */
 
-let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
+const firebaseConfig = {
 
-let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    databaseURL:
+    "https://rain-share-default-rtdb.firebaseio.com/"
 
-function saveData(){
+};
 
-    localStorage.setItem(
-        "users",
-        JSON.stringify(users)
-    );
+firebase.initializeApp(firebaseConfig);
 
-    localStorage.setItem(
-        "scripts",
-        JSON.stringify(scripts)
-    );
-}
+const db = firebase.database();
+
+/* USERS */
+
+let users = [];
+
+let currentUser =
+JSON.parse(localStorage.getItem("currentUser"));
+
+db.ref("users").on("value", snapshot => {
+
+    users = [];
+
+    snapshot.forEach(child => {
+
+        users.push(child.val());
+
+    });
+
+    document.getElementById("userCount")
+    .innerText = users.length;
+
+});
+
+/* REGISTER */
 
 function register(){
 
     let user =
-        document.getElementById("registerUser").value;
+    document.getElementById("registerUser").value;
 
     let pass =
-        document.getElementById("registerPass").value;
+    document.getElementById("registerPass").value;
 
     if(!user || !pass){
 
-        alert("Fill all fields");
+        alert("Fill all");
         return;
     }
 
@@ -315,29 +454,38 @@ function register(){
 
     if(exist){
 
-        alert("Username already exists");
+        alert("Username exists");
         return;
     }
 
-    users.push({
+    let role = "user";
+
+    if(user === "admin"){
+
+        role = "admin";
+    }
+
+    db.ref("users/" + user).set({
 
         username:user,
         password:pass,
-        role:"user"
-    });
+        role:role,
+        createdAt:Date.now()
 
-    saveData();
+    });
 
     alert("Register success");
 }
 
+/* LOGIN */
+
 function login(){
 
     let user =
-        document.getElementById("loginUser").value;
+    document.getElementById("loginUser").value;
 
     let pass =
-        document.getElementById("loginPass").value;
+    document.getElementById("loginPass").value;
 
     let found = users.find(
         u =>
@@ -361,6 +509,8 @@ function login(){
     loadUI();
 }
 
+/* LOGOUT */
+
 function logout(){
 
     localStorage.removeItem("currentUser");
@@ -368,72 +518,98 @@ function logout(){
     location.reload();
 }
 
+/* UI */
+
 function loadUI(){
 
     if(currentUser){
 
         document.getElementById("authBox")
-            .classList.add("hidden");
+        .classList.add("hidden");
 
         document.getElementById("mainBox")
-            .classList.remove("hidden");
-
-        renderScripts();
+        .classList.remove("hidden");
 
     }else{
 
         document.getElementById("authBox")
-            .classList.remove("hidden");
+        .classList.remove("hidden");
 
         document.getElementById("mainBox")
-            .classList.add("hidden");
+        .classList.add("hidden");
+
     }
 }
+
+/* SHARE */
 
 function shareScript(){
 
     let title =
-        document.getElementById("title").value;
+    document.getElementById("title").value;
+
+    let keywords =
+    document.getElementById("keywords").value;
+
+    let description =
+    document.getElementById("description").value;
 
     let content =
-        document.getElementById("content").value;
+    document.getElementById("content").value;
+
+    let image =
+    document.getElementById("image").value;
+
+    let file =
+    document.getElementById("file").value;
 
     let type =
-        document.getElementById("type").value;
+    document.getElementById("type").value;
 
-    if(!title || !content){
+    if(
+        !title ||
+        !keywords ||
+        !description ||
+        !content
+    ){
 
-        alert("Fill all");
+        alert("Fill required");
         return;
     }
 
-    if(type === "admin" &&
-        currentUser.role !== "admin"){
+    if(
+        type === "admin" &&
+        currentUser.role !== "admin"
+    ){
 
-        alert("Only admin can share admin scripts");
+        alert("Only admin");
         return;
     }
 
-    scripts.unshift({
+    let id = Date.now();
 
-        id:Date.now(),
+    db.ref("scripts/" + id).set({
 
+        id:id,
         title:title,
-
+        keywords:keywords,
+        description:description,
         content:content,
-
+        image:image,
+        file:file,
         type:type,
+        author:currentUser.username,
+        likes:0,
+        views:0,
+        createdAt:new Date().toLocaleString()
 
-        author:currentUser.username
     });
 
-    saveData();
+    alert("Shared");
 
-    renderScripts();
-
-    document.getElementById("title").value = "";
-    document.getElementById("content").value = "";
 }
+
+/* COPY */
 
 function copyScript(text){
 
@@ -442,29 +618,85 @@ function copyScript(text){
     alert("Copied");
 }
 
+/* DELETE */
+
 function deleteScript(id){
 
-    scripts = scripts.filter(
-        s => s.id !== id
-    );
+    if(currentUser.role !== "admin"){
 
-    saveData();
+        alert("Only admin");
+        return;
+    }
 
-    renderScripts();
+    db.ref("scripts/" + id).remove();
 }
 
-function renderScripts(){
+/* LIKE */
+
+function likeScript(id){
+
+    db.ref("scripts/" + id)
+    .once("value")
+    .then(snapshot => {
+
+        let data = snapshot.val();
+
+        db.ref("scripts/" + id + "/likes")
+        .set((data.likes || 0) + 1);
+
+    });
+}
+
+/* SEARCH */
+
+function searchScript(){
+
+    let input =
+    document.getElementById("search")
+    .value
+    .toLowerCase();
+
+    let scripts =
+    document.querySelectorAll(".script");
+
+    scripts.forEach(script => {
+
+        if(
+            script.innerText
+            .toLowerCase()
+            .includes(input)
+        ){
+
+            script.style.display = "block";
+
+        }else{
+
+            script.style.display = "none";
+        }
+
+    });
+}
+
+/* RENDER */
+
+db.ref("scripts").on("value", snapshot => {
 
     let adminBox =
-        document.getElementById("adminScripts");
+    document.getElementById("adminScripts");
 
     let communityBox =
-        document.getElementById("communityScripts");
+    document.getElementById("communityScripts");
 
     adminBox.innerHTML = "";
     communityBox.innerHTML = "";
 
-    scripts.forEach(script => {
+    let total = 0;
+
+    snapshot.forEach(child => {
+
+        total++;
+
+        let script = child.val();
 
         let html = `
 
@@ -474,21 +706,67 @@ function renderScripts(){
 
             <p>👤 ${script.author}</p>
 
+            <p>🕒 ${script.createdAt}</p>
+
+            <p>🏷 ${script.keywords}</p>
+
+            <p>📌 ${script.description}</p>
+
+            ${
+                script.image
+                ?
+                `<img src="${script.image}">`
+                :
+                ``
+            }
+
             <pre>${escapeHtml(script.content)}</pre>
 
+            ${
+                script.file
+                ?
+                `
+                <a href="${script.file}" target="_blank">
+                <button>
+                📁 Download File
+                </button>
+                </a>
+                `
+                :
+                ``
+            }
+
+            <br>
+
             <button
-                class="copy-btn"
-                onclick='copyScript(${JSON.stringify(script.content)})'
+            class="copy-btn"
+            onclick='copyScript(${JSON.stringify(script.content)})'
             >
-                📋 Copy
+            📋 Copy
             </button>
 
             <button
+            class="like-btn"
+            onclick="likeScript(${script.id})"
+            >
+            ❤️ ${script.likes || 0}
+            </button>
+
+            ${
+                currentUser &&
+                currentUser.role === "admin"
+                ?
+                `
+                <button
                 class="delete-btn"
                 onclick="deleteScript(${script.id})"
-            >
+                >
                 🗑 Delete
-            </button>
+                </button>
+                `
+                :
+                ``
+            }
 
         </div>
 
@@ -502,14 +780,31 @@ function renderScripts(){
 
             communityBox.innerHTML += html;
         }
+
     });
-}
+
+    document.getElementById("scriptCount")
+    .innerText = total;
+
+});
+
+/* ESCAPE */
 
 function escapeHtml(text){
 
     return text
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;");
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+}
+
+/* MENU */
+
+function toggleMenu(){
+
+    document
+    .getElementById("sidebar")
+    .classList
+    .toggle("active");
 }
 
 loadUI();
@@ -517,4 +812,4 @@ loadUI();
 </script>
 
 </body>
-  </html>
+    </html>
