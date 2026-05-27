@@ -1,5 +1,10 @@
 // ========================
-// FIREBASE CONFIG
+// RAIN SHARE FULL APP.JS
+// FIXED + OPTIMIZED
+// ========================
+
+// ========================
+// FIREBASE
 // ========================
 
 const firebaseConfig = {
@@ -30,122 +35,47 @@ measurementId:
 
 };
 
-firebase.initializeApp(firebaseConfig);
+// ========================
+// INIT
+// ========================
 
-const auth = firebase.auth();
-const db = firebase.database();
-const storage = firebase.storage();
+if(!firebase.apps.length){
+
+firebase.initializeApp(
+firebaseConfig
+);
+
+}
+
+const auth =
+firebase.auth();
+
+const db =
+firebase.database();
+
+const storage =
+firebase.storage();
 
 // ========================
 // VARIABLES
 // ========================
 
+const ADMIN_EMAIL =
+"HCROBLOX@gmail.com";
+
 const bannedWords = [
 
-"cookie",
-"webhook",
 "grabify",
-"logger",
+"webhook",
+"cookie",
 "token",
 "steal",
+"logger",
 "hack",
 "rat",
 ".exe"
 
 ];
-
-let currentTheme =
-localStorage.getItem("theme") || "dark";
-
-let musicEnabled =
-localStorage.getItem("music") || "off";
-
-// ========================
-// THEME
-// ========================
-
-if(currentTheme === "light"){
-
-document.body.classList.add(
-"light"
-);
-
-}
-
-function toggleTheme(){
-
-document.body.classList.toggle(
-"light"
-);
-
-if(
-document.body.classList.contains(
-"light"
-)
-){
-
-localStorage.setItem(
-"theme",
-"light"
-);
-
-}else{
-
-localStorage.setItem(
-"theme",
-"dark"
-);
-
-}
-
-}
-
-// ========================
-// MUSIC
-// ========================
-
-const bgMusic =
-document.getElementById(
-"bgMusic"
-);
-
-if(bgMusic){
-
-if(musicEnabled === "on"){
-
-bgMusic.volume = 0.5;
-
-bgMusic.play();
-
-}
-
-}
-
-function toggleMusic(){
-
-if(!bgMusic) return;
-
-if(bgMusic.paused){
-
-bgMusic.play();
-
-localStorage.setItem(
-"music",
-"on"
-);
-
-}else{
-
-bgMusic.pause();
-
-localStorage.setItem(
-"music",
-"off"
-);
-
-}
-
-}
 
 // ========================
 // MENU
@@ -158,6 +88,11 @@ document.getElementById(
 "sidebar"
 );
 
+const overlay =
+document.getElementById(
+"overlay"
+);
+
 if(sidebar){
 
 sidebar.classList.toggle(
@@ -166,10 +101,48 @@ sidebar.classList.toggle(
 
 }
 
+if(overlay){
+
+overlay.classList.toggle(
+"active"
+);
+
+}
+
+}
+
+function closeMenu(){
+
+const sidebar =
+document.getElementById(
+"sidebar"
+);
+
+const overlay =
+document.getElementById(
+"overlay"
+);
+
+if(sidebar){
+
+sidebar.classList.remove(
+"active"
+);
+
+}
+
+if(overlay){
+
+overlay.classList.remove(
+"active"
+);
+
+}
+
 }
 
 // ========================
-// LOADING
+// LOADER
 // ========================
 
 window.addEventListener(
@@ -199,25 +172,21 @@ loader.style.display =
 );
 
 // ========================
-// SECURITY
-// ========================
-
-function containsBadWord(text){
-
-text = text.toLowerCase();
-
-return bannedWords.some(
-word =>
-text.includes(word)
-);
-
-}
-
-// ========================
 // NOTIFICATION
 // ========================
 
 function showNotification(text){
+
+const old =
+document.querySelector(
+".notification"
+);
+
+if(old){
+
+old.remove();
+
+}
 
 const notify =
 document.createElement(
@@ -243,25 +212,155 @@ notify.remove();
 }
 
 // ========================
-// AUTH
+// THEME
 // ========================
 
-function register(){
+function toggleTheme(){
 
-let username =
+document.body.classList.toggle(
+"light"
+);
+
+if(
+document.body.classList.contains(
+"light"
+)
+){
+
+localStorage.setItem(
+"theme",
+"light"
+);
+
+}else{
+
+localStorage.setItem(
+"theme",
+"dark"
+);
+
+}
+
+}
+
+window.addEventListener(
+"load",
+()=>{
+
+if(
+localStorage.getItem(
+"theme"
+) === "light"
+){
+
+document.body.classList.add(
+"light"
+);
+
+}
+
+}
+);
+
+// ========================
+// MUSIC
+// ========================
+
+const bgMusic =
+document.getElementById(
+"bgMusic"
+);
+
+function toggleMusic(){
+
+if(!bgMusic) return;
+
+if(bgMusic.paused){
+
+bgMusic.play();
+
+localStorage.setItem(
+"music",
+"on"
+);
+
+showNotification(
+"Music ON"
+);
+
+}else{
+
+bgMusic.pause();
+
+localStorage.setItem(
+"music",
+"off"
+);
+
+showNotification(
+"Music OFF"
+);
+
+}
+
+}
+
+window.addEventListener(
+"click",
+()=>{
+
+if(
+bgMusic &&
+localStorage.getItem(
+"music"
+) === "on"
+){
+
+bgMusic.play();
+
+}
+
+},
+{
+once:true
+}
+);
+
+// ========================
+// SECURITY
+// ========================
+
+function containsBadWord(text){
+
+text = text.toLowerCase();
+
+return bannedWords.some(
+word =>
+text.includes(word)
+);
+
+}
+
+// ========================
+// REGISTER
+// ========================
+
+async function register(){
+
+const username =
 document.getElementById(
 "username"
-).value;
+)?.value;
 
-let email =
+const email =
 document.getElementById(
 "email"
-).value;
+)?.value;
 
-let password =
+const password =
 document.getElementById(
 "password"
-).value;
+)?.value;
 
 if(
 !username ||
@@ -277,24 +376,27 @@ return;
 
 }
 
-auth
+try{
+
+const cred =
+await auth
 .createUserWithEmailAndPassword(
 email,
 password
-)
+);
 
-.then((cred)=>{
-
-cred.user.updateProfile({
+await cred.user
+.updateProfile({
 
 displayName:
 username
 
 });
 
-cred.user.sendEmailVerification();
+await cred.user
+.sendEmailVerification();
 
-db.ref(
+await db.ref(
 "users/" +
 cred.user.uid
 )
@@ -307,10 +409,10 @@ username,
 email:
 email,
 
-verified:false,
-
 created:
 Date.now(),
+
+verified:false,
 
 followers:0
 
@@ -320,32 +422,38 @@ showNotification(
 "Register success"
 );
 
+setTimeout(()=>{
+
 location.href =
 "login.html";
 
-})
+},1000);
 
-.catch(err=>{
+}catch(err){
 
 showNotification(
 err.message
 );
 
-});
+}
 
 }
 
-function login(){
+// ========================
+// LOGIN
+// ========================
 
-let email =
+async function login(){
+
+const email =
 document.getElementById(
 "email"
-).value;
+)?.value;
 
-let password =
+const password =
 document.getElementById(
 "password"
-).value;
+)?.value;
 
 if(
 !email ||
@@ -360,56 +468,70 @@ return;
 
 }
 
-auth
+try{
+
+await auth
 .signInWithEmailAndPassword(
 email,
 password
-)
-
-.then(()=>{
+);
 
 showNotification(
 "Login success"
 );
 
+setTimeout(()=>{
+
 location.href =
-"index.html";
+"community.html";
 
-})
+},1000);
 
-.catch(err=>{
+}catch(err){
 
 showNotification(
 err.message
 );
 
-});
+}
 
 }
+
+// ========================
+// LOGOUT
+// ========================
 
 function logout(){
 
 auth.signOut();
 
+showNotification(
+"Logged out"
+);
+
+setTimeout(()=>{
+
 location.href =
 "index.html";
 
+},1000);
+
 }
 
-function verifyEmail(){
+// ========================
+// VERIFY EMAIL
+// ========================
+
+async function verifyEmail(){
 
 if(auth.currentUser){
 
-auth.currentUser
-.sendEmailVerification()
-
-.then(()=>{
+await auth.currentUser
+.sendEmailVerification();
 
 showNotification(
-"Verification sent"
+"Verification email sent"
 );
-
-});
 
 }
 
@@ -422,26 +544,29 @@ showNotification(
 auth.onAuthStateChanged(
 user=>{
 
-if(
+const profile =
 document.getElementById(
 "profile"
-)
-){
+);
+
+if(profile){
 
 if(user){
 
-document.getElementById(
-"profile"
-).innerHTML =
+profile.innerHTML =
 
 `
 
-<h2>
+<h1>
+
 👤 ${user.displayName}
-</h2>
+
+</h1>
 
 <p>
+
 📧 ${user.email}
+
 </p>
 
 <p>
@@ -458,7 +583,7 @@ ${user.emailVerified
 verifyEmail()
 ">
 
-📧 Verify
+📧 Verify Email
 
 </button>
 
@@ -499,37 +624,25 @@ return;
 
 }
 
-if(
-!auth.currentUser.emailVerified
-){
-
-showNotification(
-"Verify email first"
-);
-
-return;
-
-}
-
-let title =
+const title =
 document.getElementById(
 "title"
-).value;
+)?.value;
 
-let description =
+const description =
 document.getElementById(
 "description"
-).value;
+)?.value;
 
-let content =
+const content =
 document.getElementById(
 "content"
-).value;
+)?.value;
 
-let keywords =
+const keywords =
 document.getElementById(
 "keywords"
-).value;
+)?.value;
 
 if(
 !title ||
@@ -550,43 +663,21 @@ containsBadWord(content)
 ){
 
 showNotification(
-"Dangerous script detected"
+"Dangerous script blocked"
 );
 
 return;
 
 }
 
-let imageFile =
+const imageFile =
 document.getElementById(
 "image"
 )?.files[0];
 
-let fileFile =
-document.getElementById(
-"file"
-)?.files[0];
-
-if(fileFile){
-
-if(
-fileFile.name
-.toLowerCase()
-.endsWith(".exe")
-){
-
-showNotification(
-"EXE blocked"
-);
-
-return;
-
-}
-
-}
-
 let imageURL = "";
-let fileURL = "";
+
+try{
 
 if(imageFile){
 
@@ -610,31 +701,10 @@ await imageRef
 
 }
 
-if(fileFile){
+const id =
+Date.now();
 
-const fileRef =
-storage.ref(
-
-"files/" +
-Date.now() +
-"_" +
-fileFile.name
-
-);
-
-await fileRef.put(
-fileFile
-);
-
-fileURL =
-await fileRef
-.getDownloadURL();
-
-}
-
-let id = Date.now();
-
-db.ref(
+await db.ref(
 "scripts/" + id
 )
 
@@ -653,13 +723,9 @@ keywords:keywords,
 
 image:imageURL,
 
-file:fileURL,
-
 likes:0,
 
 views:0,
-
-comments:0,
 
 pinned:false,
 
@@ -682,6 +748,14 @@ showNotification(
 "Script shared"
 );
 
+}catch(err){
+
+showNotification(
+err.message
+);
+
+}
+
 }
 
 // ========================
@@ -703,30 +777,49 @@ showNotification(
 // LIKE
 // ========================
 
-function likeScript(id){
+async function likeScript(id){
+
+const ref =
+db.ref(
+"scripts/" + id
+);
+
+const snapshot =
+await ref.once("value");
+
+const data =
+snapshot.val();
+
+await ref.update({
+
+likes:
+(data.likes || 0)+1
+
+});
+
+}
+
+// ========================
+// DELETE
+// ========================
+
+function deleteScript(id){
+
+if(
+confirm(
+"Delete script?"
+)
+){
 
 db.ref(
 "scripts/" + id
-)
+).remove();
 
-.once("value")
-
-.then(snapshot=>{
-
-let data =
-snapshot.val();
-
-db.ref(
-"scripts/" +
-id +
-"/likes"
-)
-
-.set(
-(data.likes || 0)+1
+showNotification(
+"Deleted"
 );
 
-});
+}
 
 }
 
@@ -736,9 +829,9 @@ id +
 
 function reportScript(id){
 
-let reason =
+const reason =
 prompt(
-"Why are you reporting?"
+"Why report this script?"
 );
 
 if(!reason) return;
@@ -771,68 +864,15 @@ showNotification(
 }
 
 // ========================
-// DELETE
-// ========================
-
-function deleteScript(id){
-
-if(
-confirm(
-"Delete script?"
-)
-){
-
-db.ref(
-"scripts/" + id
-).remove();
-
-}
-
-}
-
-// ========================
-// PIN
-// ========================
-
-function pinScript(id){
-
-db.ref(
-"scripts/" +
-id +
-"/pinned"
-)
-
-.set(true);
-
-}
-
-// ========================
-// TRENDING
-// ========================
-
-function makeTrending(id){
-
-db.ref(
-"scripts/" +
-id +
-"/trending"
-)
-
-.set(true);
-
-}
-
-// ========================
 // SEARCH
 // ========================
 
 function searchScripts(){
 
-let input =
+const input =
 document.getElementById(
 "search"
-)
-.value
+)?.value
 .toLowerCase();
 
 document
@@ -866,12 +906,14 @@ script.style.display =
 
 function sendComment(id){
 
-let input =
+const input =
 document.getElementById(
 "comment-" + id
 );
 
-let text =
+if(!input) return;
+
+const text =
 input.value;
 
 if(!text) return;
@@ -913,19 +955,25 @@ let html = "";
 
 snap.forEach(child=>{
 
-let c =
+const c =
 child.val();
 
-html += `
+html +=
+
+`
 
 <div class="comment">
 
 <b>
+
 ${c.user}
+
 </b>
 
 <p>
+
 ${c.text}
+
 </p>
 
 </div>
@@ -934,14 +982,14 @@ ${c.text}
 
 });
 
-const commentsBox =
+const box =
 document.getElementById(
 "comments-" + id
 );
 
-if(commentsBox){
+if(box){
 
-commentsBox.innerHTML =
+box.innerHTML =
 html;
 
 }
@@ -967,10 +1015,12 @@ let html = "";
 
 snap.forEach(child=>{
 
-let script =
+const script =
 child.val();
 
-html += `
+html +=
+
+`
 
 <div class="script">
 
@@ -993,24 +1043,34 @@ ${script.title}
 </h2>
 
 <p>
+
 👤 ${script.author}
+
 </p>
 
 <p>
-🏷 ${script.keywords}
-</p>
 
-<p>
 🕒 ${script.time}
+
 </p>
 
 <p>
+
+🏷 ${script.keywords || ""}
+
+</p>
+
+<p>
+
 👀 ${script.views || 0}
 views
+
 </p>
 
 <p>
+
 ${script.description}
+
 </p>
 
 ${
@@ -1019,19 +1079,19 @@ script.image
 `
 <img
 src="${script.image}"
-style="
-width:100%;
-border-radius:20px;
-margin-top:15px;
-">
+class="scriptImage">
 `
 :
-``
+""
 }
 
 <pre>
+
 ${script.content}
+
 </pre>
+
+<div class="scriptButtons">
 
 <button onclick="
 copyScript(
@@ -1049,8 +1109,7 @@ likeScript(
 )
 ">
 
-❤️
-${script.likes || 0}
+❤️ ${script.likes || 0}
 
 </button>
 
@@ -1066,9 +1125,8 @@ reportScript(
 
 ${
 auth.currentUser &&
-auth.currentUser.email
-===
-"HCROBLOX@gmail.com"
+auth.currentUser.email ===
+ADMIN_EMAIL
 ?
 `
 
@@ -1082,51 +1140,12 @@ deleteScript(
 
 </button>
 
-<button onclick="
-pinScript(
-'${script.id}'
-)
-">
-
-📌 Pin
-
-</button>
-
-<button onclick="
-makeTrending(
-'${script.id}'
-)
-">
-
-🔥 Trending
-
-</button>
-
 `
 :
-``
+""
 }
 
-${
-script.file
-?
-`
-<br><br>
-
-<a
-href="${script.file}"
-target="_blank"
->
-
-<button>
-⬇ Download
-</button>
-
-</a>
-`
-:
-``
-}
+</div>
 
 <div id="
 comments-${script.id}
@@ -1168,14 +1187,15 @@ script.id
 
 document.getElementById(
 "scripts"
-).innerHTML = html;
+).innerHTML =
+html;
 
 });
 
 }
 
 // ========================
-// REPORTS
+// ADMIN REPORTS
 // ========================
 
 if(
@@ -1190,7 +1210,7 @@ user=>{
 if(
 user &&
 user.email ===
-"HCROBLOX@gmail.com"
+ADMIN_EMAIL
 ){
 
 db.ref("reports")
@@ -1202,27 +1222,37 @@ snap.forEach(child=>{
 
 child.forEach(r=>{
 
-let report =
+const report =
 r.val();
 
-html += `
+html +=
+
+`
 
 <div class="script">
 
 <h2>
+
 🚨 Report
+
 </h2>
 
 <p>
+
 ${report.reason}
+
 </p>
 
 <p>
+
 ${report.reporter}
+
 </p>
 
 <p>
+
 ${report.time}
+
 </p>
 
 </div>
@@ -1235,14 +1265,27 @@ ${report.time}
 
 document.getElementById(
 "reports"
-).innerHTML = html;
+).innerHTML =
+html;
 
 });
 
 }else{
 
 document.body.innerHTML =
-"<h1>Access Denied</h1>";
+
+`
+
+<h1 style="
+text-align:center;
+margin-top:100px;
+">
+
+❌ Access Denied
+
+</h1>
+
+`;
 
 }
 
