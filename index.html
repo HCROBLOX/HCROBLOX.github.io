@@ -3,13 +3,11 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Rain Share</title>
 
-<meta name="description" content="Rain Share - Community Script Sharing Website">
-
+<meta name="description" content="Rain Share Community Script Sharing">
 <meta name="keywords" content="Rain Share, Roblox Script, Script Hub">
 
 <link rel="icon" href="logo.png">
@@ -17,8 +15,11 @@
 <!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- SHA256 -->
+
+<script src="https://cdn.jsdelivr.net/npm/js-sha256@0.11.0/src/sha256.min.js"></script>
 
 <style>
 
@@ -28,11 +29,17 @@
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     background:#0f172a;
     color:white;
     font-family:Arial;
 }
+
+/* HEADER */
 
 header{
     background:#111827;
@@ -41,7 +48,7 @@ header{
     border-bottom:3px solid #38bdf8;
     position:sticky;
     top:0;
-    z-index:999;
+    z-index:100;
 }
 
 .logo img{
@@ -51,15 +58,62 @@ header{
 }
 
 header h1{
-    color:#38bdf8;
     margin-top:15px;
     font-size:42px;
+    color:#38bdf8;
 }
 
 header p{
     color:#cbd5e1;
     margin-top:10px;
 }
+
+/* MENU */
+
+.menu-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    width:60px;
+    height:60px;
+    border-radius:18px;
+    background:#38bdf8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    cursor:pointer;
+    z-index:99999;
+    box-shadow:0 0 20px #38bdf8;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    right:-320px;
+    width:300px;
+    height:100%;
+    background:#111827;
+    padding:25px;
+    transition:0.3s;
+    z-index:999999;
+    overflow:auto;
+}
+
+.sidebar.active{
+    right:0;
+}
+
+.sidebar h1{
+    color:#38bdf8;
+    margin-bottom:20px;
+}
+
+.sidebar button{
+    width:100%;
+}
+
+/* MAIN */
 
 .container{
     width:90%;
@@ -73,12 +127,16 @@ header p{
     padding:25px;
     border-radius:20px;
     margin-bottom:25px;
+    box-shadow:0 0 15px rgba(0,0,0,0.4);
+    animation:fade 0.3s ease;
 }
 
 h2{
     color:#38bdf8;
     margin-bottom:15px;
 }
+
+/* INPUT */
 
 input,
 textarea,
@@ -98,6 +156,8 @@ textarea{
     resize:none;
 }
 
+/* BUTTON */
+
 button{
     padding:12px 25px;
     border:none;
@@ -112,11 +172,11 @@ button{
 
 button:hover{
     transform:scale(1.03);
+    opacity:0.9;
 }
 
 .copy-btn{
     background:#22c55e;
-    margin-right:10px;
 }
 
 .delete-btn{
@@ -126,6 +186,27 @@ button:hover{
 .like-btn{
     background:#f43f5e;
 }
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.stat{
+    background:#334155;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.stat h1{
+    color:#38bdf8;
+}
+
+/* SCRIPT */
 
 .script{
     background:#334155;
@@ -154,51 +235,11 @@ button:hover{
     margin-top:15px;
     white-space:pre-wrap;
     color:#e2e8f0;
+    overflow:auto;
 }
 
 .hidden{
     display:none;
-}
-
-.menu-btn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:#38bdf8;
-    width:60px;
-    height:60px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    z-index:9999;
-}
-
-.sidebar{
-    position:fixed;
-    top:0;
-    right:-300px;
-    width:280px;
-    height:100%;
-    background:#111827;
-    padding:20px;
-    transition:0.3s;
-    z-index:99999;
-}
-
-.sidebar.active{
-    right:0;
-}
-
-.sidebar h1{
-    color:#38bdf8;
-    margin-bottom:20px;
-}
-
-.sidebar button{
-    width:100%;
-    margin-top:10px;
 }
 
 .footer{
@@ -207,32 +248,35 @@ button:hover{
     padding:25px;
 }
 
-.stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.stat{
-    background:#334155;
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
-}
-
-.stat h1{
-    color:#38bdf8;
-}
+/* ANIMATION */
 
 @keyframes fade{
+
     from{
         opacity:0;
         transform:translateY(10px);
     }
+
     to{
         opacity:1;
         transform:translateY(0);
     }
+
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:32px;
+    }
+
+    .menu-btn{
+        width:55px;
+        height:55px;
+    }
+
 }
 
 </style>
@@ -241,7 +285,9 @@ button:hover{
 
 <body>
 
-<div class="menu-btn" onclick="toggleMenu()">
+<!-- MENU -->
+
+<div class="menu-btn" onclick="toggleMenu(event)">
 ☰
 </div>
 
@@ -249,15 +295,15 @@ button:hover{
 
 <h1>🌧 Rain Share</h1>
 
-<button onclick="window.scrollTo(0,0)">
+<button onclick="scrollToBox('top')">
 🏠 Home
 </button>
 
-<button onclick="document.getElementById('shareBox').scrollIntoView()">
+<button onclick="scrollToBox('shareBox')">
 📤 Share
 </button>
 
-<button onclick="document.getElementById('communityBox').scrollIntoView()">
+<button onclick="scrollToBox('communityBox')">
 🌍 Scripts
 </button>
 
@@ -267,12 +313,12 @@ button:hover{
 
 </div>
 
-<header>
+<!-- HEADER -->
+
+<header id="top">
 
 <div class="logo">
-
 <img src="logo.png">
-
 </div>
 
 <h1>🌧 Rain Share</h1>
@@ -281,7 +327,11 @@ button:hover{
 
 </header>
 
+<!-- MAIN -->
+
 <div class="container">
+
+<!-- STATS -->
 
 <div class="stats">
 
@@ -297,7 +347,7 @@ button:hover{
 
 </div>
 
-<!-- LOGIN -->
+<!-- AUTH -->
 
 <div class="box" id="authBox">
 
@@ -325,15 +375,21 @@ Register
 
 </div>
 
-<!-- MAIN -->
+<!-- MAIN UI -->
 
 <div id="mainBox" class="hidden">
 
 <div class="box">
 
-<input type="text" id="search" placeholder="🔎 Search script realtime..." onkeyup="searchScript()">
+<input
+type="text"
+id="search"
+placeholder="🔎 Search script..."
+onkeyup="searchScript()">
 
 </div>
+
+<!-- SHARE -->
 
 <div class="box" id="shareBox">
 
@@ -369,6 +425,8 @@ Share Script
 
 </div>
 
+<!-- ADMIN -->
+
 <div class="box">
 
 <h2>👑 Admin Share</h2>
@@ -376,6 +434,8 @@ Share Script
 <div id="adminScripts"></div>
 
 </div>
+
+<!-- COMMUNITY -->
 
 <div class="box" id="communityBox">
 
@@ -389,10 +449,10 @@ Share Script
 
 </div>
 
+<!-- FOOTER -->
+
 <div class="footer">
-
 Rain Share © 2026
-
 </div>
 
 <script>
@@ -410,12 +470,49 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
 
+/* ADMIN */
+
+const ADMIN_USERNAME = "HCROBLOX";
+
+/* HASHED PASSWORD */
+
+const ADMIN_PASSWORD_HASH =
+"0a45d9f4d12f7c6a1e8b1d1f0b2f9f7d8a2c6f3e4b5a7d9e1c2f4a6b8d0e9f1";
+
 /* USERS */
 
 let users = [];
 
 let currentUser =
 JSON.parse(localStorage.getItem("currentUser"));
+
+/* CREATE ADMIN */
+
+db.ref("users/" + ADMIN_USERNAME)
+.once("value")
+.then(snapshot => {
+
+    if(!snapshot.exists()){
+
+        db.ref("users/" + ADMIN_USERNAME)
+        .set({
+
+            username:ADMIN_USERNAME,
+
+            password:
+            ADMIN_PASSWORD_HASH,
+
+            role:"admin",
+
+            createdAt:Date.now()
+
+        });
+
+    }
+
+});
+
+/* LOAD USERS */
 
 db.ref("users").on("value", snapshot => {
 
@@ -437,19 +534,32 @@ db.ref("users").on("value", snapshot => {
 function register(){
 
     let user =
-    document.getElementById("registerUser").value;
+    document.getElementById("registerUser").value.trim();
 
     let pass =
     document.getElementById("registerPass").value;
 
     if(!user || !pass){
 
-        alert("Fill all");
+        alert("Fill all fields");
+        return;
+    }
+
+    if(user.length < 3){
+
+        alert("Username too short");
+        return;
+    }
+
+    if(pass.length < 6){
+
+        alert("Password too short");
         return;
     }
 
     let exist = users.find(
-        u => u.username === user
+        u => u.username.toLowerCase()
+        === user.toLowerCase()
     );
 
     if(exist){
@@ -458,23 +568,21 @@ function register(){
         return;
     }
 
-    let role = "user";
-
-    if(user === "admin"){
-
-        role = "admin";
-    }
-
     db.ref("users/" + user).set({
 
         username:user,
-        password:pass,
-        role:role,
+
+        password:
+        sha256(pass),
+
+        role:"user",
+
         createdAt:Date.now()
 
     });
 
     alert("Register success");
+
 }
 
 /* LOGIN */
@@ -482,10 +590,12 @@ function register(){
 function login(){
 
     let user =
-    document.getElementById("loginUser").value;
+    document.getElementById("loginUser").value.trim();
 
     let pass =
-    document.getElementById("loginPass").value;
+    sha256(
+        document.getElementById("loginPass").value
+    );
 
     let found = users.find(
         u =>
@@ -507,6 +617,7 @@ function login(){
     );
 
     loadUI();
+
 }
 
 /* LOGOUT */
@@ -516,6 +627,7 @@ function logout(){
     localStorage.removeItem("currentUser");
 
     location.reload();
+
 }
 
 /* UI */
@@ -539,29 +651,36 @@ function loadUI(){
         .classList.add("hidden");
 
     }
+
 }
 
 /* SHARE */
 
 function shareScript(){
 
+    if(!currentUser){
+
+        alert("Login first");
+        return;
+    }
+
     let title =
-    document.getElementById("title").value;
+    document.getElementById("title").value.trim();
 
     let keywords =
-    document.getElementById("keywords").value;
+    document.getElementById("keywords").value.trim();
 
     let description =
-    document.getElementById("description").value;
+    document.getElementById("description").value.trim();
 
     let content =
-    document.getElementById("content").value;
+    document.getElementById("content").value.trim();
 
     let image =
-    document.getElementById("image").value;
+    document.getElementById("image").value.trim();
 
     let file =
-    document.getElementById("file").value;
+    document.getElementById("file").value.trim();
 
     let type =
     document.getElementById("type").value;
@@ -573,7 +692,7 @@ function shareScript(){
         !content
     ){
 
-        alert("Fill required");
+        alert("Fill required fields");
         return;
     }
 
@@ -607,6 +726,13 @@ function shareScript(){
 
     alert("Shared");
 
+    document.getElementById("title").value = "";
+    document.getElementById("keywords").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("content").value = "";
+    document.getElementById("image").value = "";
+    document.getElementById("file").value = "";
+
 }
 
 /* COPY */
@@ -616,11 +742,17 @@ function copyScript(text){
     navigator.clipboard.writeText(text);
 
     alert("Copied");
+
 }
 
 /* DELETE */
 
 function deleteScript(id){
+
+    if(!currentUser){
+
+        return;
+    }
 
     if(currentUser.role !== "admin"){
 
@@ -629,6 +761,7 @@ function deleteScript(id){
     }
 
     db.ref("scripts/" + id).remove();
+
 }
 
 /* LIKE */
@@ -645,6 +778,7 @@ function likeScript(id){
         .set((data.likes || 0) + 1);
 
     });
+
 }
 
 /* SEARCH */
@@ -672,9 +806,11 @@ function searchScript(){
         }else{
 
             script.style.display = "none";
+
         }
 
     });
+
 }
 
 /* RENDER */
@@ -702,15 +838,15 @@ db.ref("scripts").on("value", snapshot => {
 
         <div class="script">
 
-            <h3>${script.title}</h3>
+            <h3>${escapeHtml(script.title)}</h3>
 
-            <p>👤 ${script.author}</p>
+            <p>👤 ${escapeHtml(script.author)}</p>
 
-            <p>🕒 ${script.createdAt}</p>
+            <p>🕒 ${escapeHtml(script.createdAt)}</p>
 
-            <p>🏷 ${script.keywords}</p>
+            <p>🏷 ${escapeHtml(script.keywords)}</p>
 
-            <p>📌 ${script.description}</p>
+            <p>📌 ${escapeHtml(script.description)}</p>
 
             ${
                 script.image
@@ -727,9 +863,11 @@ db.ref("scripts").on("value", snapshot => {
                 ?
                 `
                 <a href="${script.file}" target="_blank">
+
                 <button>
                 📁 Download File
                 </button>
+
                 </a>
                 `
                 :
@@ -779,6 +917,7 @@ db.ref("scripts").on("value", snapshot => {
         }else{
 
             communityBox.innerHTML += html;
+
         }
 
     });
@@ -792,19 +931,62 @@ db.ref("scripts").on("value", snapshot => {
 
 function escapeHtml(text){
 
-    return text
+    return String(text)
+    .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;");
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
 }
 
 /* MENU */
 
-function toggleMenu(){
+function toggleMenu(event){
+
+    event.stopPropagation();
 
     document
     .getElementById("sidebar")
     .classList
     .toggle("active");
+
+}
+
+/* CLOSE MENU */
+
+document.addEventListener("click", function(e){
+
+    let sidebar =
+    document.getElementById("sidebar");
+
+    let menuBtn =
+    document.querySelector(".menu-btn");
+
+    if(
+        !sidebar.contains(e.target) &&
+        !menuBtn.contains(e.target)
+    ){
+
+        sidebar.classList.remove("active");
+
+    }
+
+});
+
+/* SCROLL */
+
+function scrollToBox(id){
+
+    document
+    .getElementById(id)
+    .scrollIntoView();
+
+    document
+    .getElementById("sidebar")
+    .classList
+    .remove("active");
+
 }
 
 loadUI();
