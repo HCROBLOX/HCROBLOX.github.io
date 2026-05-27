@@ -12,14 +12,16 @@ content="IE=edge">
 content="width=device-width, initial-scale=1.0">
 
 <title>
+
 Rain Share - Community Script Sharing
+
 </title>
 
 <meta name="description"
-content="Rain Share is a community website for sharing Roblox scripts safely and easily.">
+content="Rain Share is a community script sharing website for Roblox users.">
 
 <meta name="keywords"
-content="Roblox, Scripts, Rain Share, Roblox Hub, Lua, Exploit">
+content="Roblox, Scripts, Lua, Rain Share, Roblox Scripts">
 
 <meta name="author"
 content="HCROBLOX">
@@ -31,7 +33,7 @@ content="#38bdf8">
 content="Rain Share">
 
 <meta property="og:description"
-content="Community Script Sharing Website">
+content="Community Roblox Script Sharing Website">
 
 <meta property="og:image"
 content="logo.png">
@@ -39,13 +41,7 @@ content="logo.png">
 <meta property="og:type"
 content="website">
 
-<meta property="og:url"
-content="https://hcroblox.github.io/Rain-share.github.io/">
-
 <link rel="icon"
-href="logo.png">
-
-<link rel="apple-touch-icon"
 href="logo.png">
 
 <link rel="stylesheet"
@@ -65,21 +61,29 @@ href="style.css">
 
 <body>
 
-<!-- LOADING -->
+<!-- LOADER -->
 
 <div id="loader">
 
 <div class="loaderBox">
 
-<img src="logo.png"
-class="loaderLogo">
+<img
+src="logo.png"
+style="
+width:100px;
+margin-bottom:20px;
+">
 
 <h1>
+
 🌧 Rain Share
+
 </h1>
 
 <p>
+
 Loading Website...
+
 </p>
 
 <div class="loadingBar">
@@ -94,71 +98,83 @@ Loading Website...
 
 </div>
 
-<!-- MUSIC -->
+<!-- OVERLAY -->
 
-<audio id="bgMusic" loop>
+<div
+id="overlay"
+onclick="closeMenu()">
 
-<source src="music.mp3"
-type="audio/mpeg">
-
-</audio>
+</div>
 
 <!-- SIDEBAR -->
 
 <div id="sidebar">
 
-<div class="sidebarTop">
-
-<img src="logo.png"
-class="sidebarLogo">
-
 <h1>
-Rain Share
+
+🌧 Rain Share
+
 </h1>
-
-</div>
-
-<div class="sidebarLinks">
 
 <a href="index.html">
 
+<button>
+
 🏠 Home
+
+</button>
 
 </a>
 
 <a href="community.html">
 
+<button>
+
 🌎 Community
+
+</button>
 
 </a>
 
 <a href="profile.html">
 
+<button>
+
 👤 Profile
+
+</button>
 
 </a>
 
 <a href="login.html">
 
+<button>
+
 🔑 Login
+
+</button>
 
 </a>
 
 <a href="register.html">
 
+<button>
+
 📝 Register
+
+</button>
 
 </a>
 
 <a href="admin.html">
 
+<button>
+
 🛡 Admin
 
+</button>
+
 </a>
-
-</div>
-
-<div class="sidebarButtons">
 
 <button onclick="toggleTheme()">
 
@@ -174,22 +190,12 @@ Rain Share
 
 </div>
 
-</div>
-
-<!-- OVERLAY -->
-
-<div id="overlay"
-onclick="toggleMenu()">
-
-</div>
-
 <!-- TOPBAR -->
 
 <header class="topbar">
 
-<div class="leftTopbar">
-
-<button class="menuBtn"
+<button
+class="menuBtn"
 onclick="toggleMenu()">
 
 ☰
@@ -202,29 +208,23 @@ onclick="toggleMenu()">
 
 </h2>
 
-</div>
-
-<div class="rightTopbar">
-
-<a href="login.html">
-
-<button>
-
-Login
-
-</button>
-
-</a>
-
-</div>
-
 </header>
+
+<!-- MUSIC -->
+
+<audio
+id="bgMusic"
+loop>
+
+<source
+src="music.mp3"
+type="audio/mpeg">
+
+</audio>
 
 <!-- HERO -->
 
 <section class="hero">
-
-<div class="heroContent">
 
 <h1>
 
@@ -243,7 +243,7 @@ with the Rain Share community.
 
 <a href="community.html">
 
-<button class="mainBtn">
+<button>
 
 🚀 Explore Scripts
 
@@ -253,7 +253,7 @@ with the Rain Share community.
 
 <a href="register.html">
 
-<button class="secondBtn">
+<button>
 
 ✨ Join Community
 
@@ -263,114 +263,93 @@ with the Rain Share community.
 
 </div>
 
-</div>
-
-<div class="heroImage">
-
-<img src="logo.png">
-
-</div>
-
-</section>
-
-<!-- STATS -->
-
-<section class="statsSection">
-
-<div class="statCard">
-
-<h1 id="totalScripts">
-0
-</h1>
-
-<p>
-Scripts
-</p>
-
-</div>
-
-<div class="statCard">
-
-<h1 id="totalUsers">
-0
-</h1>
-
-<p>
-Users
-</p>
-
-</div>
-
-<div class="statCard">
-
-<h1 id="totalReports">
-0
-</h1>
-
-<p>
-Reports
-</p>
-
-</div>
-
 </section>
 
 <!-- FEATURES -->
 
-<section class="features">
+<section
+style="
+padding:20px;
+">
 
-<h1>
+<h1
+style="
+text-align:center;
+margin-bottom:30px;
+">
 
 🔥 Features
 
 </h1>
 
-<div class="featureGrid">
+<div
+style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+">
 
-<div class="featureCard">
+<div class="script">
 
 <h2>
+
 ⚡ Fast
+
 </h2>
 
 <p>
-Realtime Firebase system
+
+Realtime Firebase Database
+
 </p>
 
 </div>
 
-<div class="featureCard">
+<div class="script">
 
 <h2>
-🔒 Safe
+
+🔒 Secure
+
 </h2>
 
 <p>
+
 Dangerous scripts blocked
+
 </p>
 
 </div>
 
-<div class="featureCard">
+<div class="script">
 
 <h2>
+
 🌎 Community
+
 </h2>
 
 <p>
-Everyone can share scripts
+
+Upload and share scripts
+
 </p>
 
 </div>
 
-<div class="featureCard">
+<div class="script">
 
 <h2>
+
 🎵 Chill
+
 </h2>
 
 <p>
+
 Background music support
+
 </p>
 
 </div>
@@ -383,12 +362,6 @@ Background music support
 
 <section class="searchSection">
 
-<h1>
-
-🔍 Search Scripts
-
-</h1>
-
 <input
 type="text"
 id="search"
@@ -400,9 +373,15 @@ onkeyup="searchScripts()"
 
 <!-- TRENDING -->
 
-<section class="trendingSection">
+<section
+style="
+padding:20px;
+">
 
-<h1>
+<h1
+style="
+margin-bottom:20px;
+">
 
 🔥 Trending Scripts
 
@@ -414,9 +393,91 @@ onkeyup="searchScripts()"
 
 </section>
 
+<!-- STATS -->
+
+<section
+style="
+padding:20px;
+">
+
+<h1
+style="
+text-align:center;
+margin-bottom:30px;
+">
+
+📊 Website Stats
+
+</h1>
+
+<div
+style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+">
+
+<div class="script">
+
+<h1 id="totalScripts">
+
+0
+
+</h1>
+
+<p>
+
+Scripts Uploaded
+
+</p>
+
+</div>
+
+<div class="script">
+
+<h1 id="totalUsers">
+
+0
+
+</h1>
+
+<p>
+
+Registered Users
+
+</p>
+
+</div>
+
+<div class="script">
+
+<h1 id="totalReports">
+
+0
+
+</h1>
+
+<p>
+
+Reports Sent
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
 <!-- ABOUT -->
 
-<section class="aboutSection">
+<section
+style="
+padding:20px;
+">
+
+<div class="script">
 
 <h1>
 
@@ -424,28 +485,32 @@ onkeyup="searchScripts()"
 
 </h1>
 
-<p>
+<p
+style="
+margin-top:20px;
+line-height:1.8;
+">
 
 Rain Share is a Roblox script
 sharing platform built for the
 community.
 
 Users can upload scripts,
-share files, comment,
+share images,
+comment,
+like scripts,
 report dangerous content,
-and explore trending scripts.
+and discover trending scripts.
 
 </p>
+
+</div>
 
 </section>
 
 <!-- FOOTER -->
 
 <footer>
-
-<div class="footerTop">
-
-<div>
 
 <h2>
 
@@ -455,77 +520,31 @@ and explore trending scripts.
 
 <p>
 
-Community Script Sharing
+Community Script Sharing Website
 
 </p>
 
-</div>
-
-<div class="footerLinks">
-
-<a href="index.html">
-
-Home
-
-</a>
-
-<a href="community.html">
-
-Community
-
-</a>
-
-<a href="login.html">
-
-Login
-
-</a>
-
-<a href="register.html">
-
-Register
-
-</a>
-
-</div>
-
-</div>
-
-<hr>
-
-<div class="footerBottom">
-
-<p>
-
-© 2026 Rain Share
-
-</p>
-
-<p>
+<p
+style="
+margin-top:10px;
+opacity:0.7;
+">
 
 Powered by HCROBLOX
 
 </p>
 
-</div>
-
 </footer>
-
-<!-- FLOAT BUTTON -->
-
-<button id="scrollTopBtn">
-
-⬆
-
-</button>
 
 <!-- APP -->
 
 <script src="app.js"></script>
 
-<!-- AUTO MUSIC -->
+<!-- EXTRA FIX -->
 
 <script>
+
+// AUTO PLAY FIX
 
 document.addEventListener(
 "click",
@@ -536,7 +555,12 @@ document.getElementById(
 "bgMusic"
 );
 
-if(music){
+if(
+music &&
+localStorage.getItem(
+"music"
+) === "on"
+){
 
 music.play();
 
@@ -548,72 +572,56 @@ once:true
 }
 );
 
-// SCROLL TOP
-
-const scrollBtn =
-document.getElementById(
-"scrollTopBtn"
-);
-
-window.onscroll = ()=>{
-
-if(
-document.body.scrollTop > 200 ||
-document.documentElement.scrollTop > 200
-){
-
-scrollBtn.style.display =
-"flex";
-
-}else{
-
-scrollBtn.style.display =
-"none";
-
-}
-
-};
-
-scrollBtn.onclick = ()=>{
-
-window.scrollTo({
-
-top:0,
-behavior:"smooth"
-
-});
-
-};
-
 // STATS
 
 db.ref("scripts")
 .on("value",snap=>{
 
+const el =
 document.getElementById(
 "totalScripts"
-).innerText =
+);
+
+if(el){
+
+el.innerText =
 snap.numChildren();
+
+}
 
 });
 
 db.ref("users")
 .on("value",snap=>{
 
+const el =
 document.getElementById(
 "totalUsers"
-).innerText =
+);
+
+if(el){
+
+el.innerText =
 snap.numChildren();
+
+}
 
 });
 
 db.ref("reports")
 .on("value",snap=>{
 
+const el =
 document.getElementById(
 "totalReports"
-).innerText =
+);
+
+if(el){
+
+el.innerText =
 snap.numChildren();
+
+}
 
 });
 
