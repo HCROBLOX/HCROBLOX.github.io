@@ -1,337 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Rain Share</title>
-
-<meta name="description" content="Rain Share Community Script Sharing">
-<meta name="keywords" content="Rain Share, Roblox Script, Script Hub">
-
-<link rel="icon" href="logo.png">
-
-<!-- FIREBASE -->
+<title>Rain Share FULL REAL</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-<!-- SHA256 -->
-
-<script src="https://cdn.jsdelivr.net/npm/js-sha256@0.11.0/src/sha256.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <style>
-
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+scroll-behavior:smooth;
 }
 
 body{
-    background:#0f172a;
-    color:white;
-    font-family:Arial;
+background:#0f172a;
+color:white;
+overflow-x:hidden;
 }
-
-/* HEADER */
 
 header{
-    background:#111827;
-    padding:25px;
-    text-align:center;
-    border-bottom:3px solid #38bdf8;
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-
-.logo img{
-    width:130px;
-    border-radius:20px;
-    box-shadow:0 0 25px #38bdf8;
+background:#111827;
+padding:30px;
+text-align:center;
+border-bottom:3px solid #38bdf8;
+position:sticky;
+top:0;
+z-index:999;
+backdrop-filter:blur(10px);
 }
 
 header h1{
-    margin-top:15px;
-    font-size:42px;
-    color:#38bdf8;
+font-size:42px;
+color:#38bdf8;
 }
 
 header p{
-    color:#cbd5e1;
-    margin-top:10px;
+margin-top:10px;
+color:#cbd5e1;
 }
-
-/* MENU */
-
-.menu-btn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    width:60px;
-    height:60px;
-    border-radius:18px;
-    background:#38bdf8;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-    cursor:pointer;
-    z-index:99999;
-    box-shadow:0 0 20px #38bdf8;
-}
-
-.sidebar{
-    position:fixed;
-    top:0;
-    right:-320px;
-    width:300px;
-    height:100%;
-    background:#111827;
-    padding:25px;
-    transition:0.3s;
-    z-index:999999;
-    overflow:auto;
-}
-
-.sidebar.active{
-    right:0;
-}
-
-.sidebar h1{
-    color:#38bdf8;
-    margin-bottom:20px;
-}
-
-.sidebar button{
-    width:100%;
-}
-
-/* MAIN */
 
 .container{
-    width:90%;
-    max-width:1000px;
-    margin:auto;
-    margin-top:30px;
+width:92%;
+max-width:1100px;
+margin:auto;
+margin-top:30px;
 }
 
 .box{
-    background:#1e293b;
-    padding:25px;
-    border-radius:20px;
-    margin-bottom:25px;
-    box-shadow:0 0 15px rgba(0,0,0,0.4);
-    animation:fade 0.3s ease;
+background:#1e293b;
+padding:25px;
+border-radius:20px;
+margin-bottom:25px;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+animation:fade 0.5s ease;
 }
 
-h2{
-    color:#38bdf8;
-    margin-bottom:15px;
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
 }
-
-/* INPUT */
+to{
+opacity:1;
+transform:translateY(0px);
+}
+}
 
 input,
 textarea,
 select{
-    width:100%;
-    padding:14px;
-    margin-top:12px;
-    border:none;
-    border-radius:12px;
-    background:#334155;
-    color:white;
-    font-size:15px;
+width:100%;
+padding:14px;
+margin-top:12px;
+border:none;
+border-radius:14px;
+background:#334155;
+color:white;
 }
 
 textarea{
-    height:140px;
-    resize:none;
+height:130px;
+resize:none;
 }
 
-/* BUTTON */
-
 button{
-    padding:12px 25px;
-    border:none;
-    border-radius:12px;
-    background:#38bdf8;
-    color:white;
-    font-size:15px;
-    cursor:pointer;
-    margin-top:15px;
-    transition:0.2s;
+padding:12px 20px;
+border:none;
+border-radius:14px;
+background:#38bdf8;
+color:white;
+cursor:pointer;
+margin-top:15px;
+transition:0.2s;
 }
 
 button:hover{
-    transform:scale(1.03);
-    opacity:0.9;
-}
-
-.copy-btn{
-    background:#22c55e;
-}
-
-.delete-btn{
-    background:#ef4444;
-}
-
-.like-btn{
-    background:#f43f5e;
-}
-
-/* STATS */
-
-.stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.stat{
-    background:#334155;
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
-}
-
-.stat h1{
-    color:#38bdf8;
-}
-
-/* SCRIPT */
-
-.script{
-    background:#334155;
-    padding:20px;
-    border-radius:15px;
-    margin-top:15px;
-    animation:fade 0.3s ease;
-}
-
-.script img{
-    width:100%;
-    border-radius:15px;
-    margin-top:10px;
-}
-
-.script h3{
-    color:#38bdf8;
-}
-
-.script p{
-    margin-top:10px;
-    color:#cbd5e1;
-}
-
-.script pre{
-    margin-top:15px;
-    white-space:pre-wrap;
-    color:#e2e8f0;
-    overflow:auto;
+transform:scale(1.03);
+opacity:0.9;
 }
 
 .hidden{
-    display:none;
+display:none;
 }
 
-.footer{
-    text-align:center;
-    color:#94a3b8;
-    padding:25px;
+.script{
+background:#334155;
+padding:20px;
+border-radius:18px;
+margin-top:20px;
+animation:fade 0.4s ease;
 }
 
-/* ANIMATION */
-
-@keyframes fade{
-
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
+.script img{
+width:100%;
+border-radius:15px;
+margin-top:10px;
 }
 
-/* MOBILE */
-
-@media(max-width:600px){
-
-    header h1{
-        font-size:32px;
-    }
-
-    .menu-btn{
-        width:55px;
-        height:55px;
-    }
-
+.copy-btn{
+background:#22c55e;
 }
 
+.like-btn{
+background:#ec4899;
+}
+
+.delete-btn{
+background:#ef4444;
+}
+
+.menu-btn{
+position:fixed;
+right:20px;
+top:20px;
+width:55px;
+height:55px;
+background:#38bdf8;
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+cursor:pointer;
+z-index:99999;
+}
+
+.sidebar{
+position:fixed;
+right:-320px;
+top:0;
+width:300px;
+height:100%;
+background:#111827;
+padding:25px;
+transition:0.3s;
+z-index:999999;
+overflow:auto;
+}
+
+.sidebar.active{
+right:0;
+}
+
+.sidebar button{
+width:100%;
+}
+
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:25px;
+}
+
+.stat{
+background:#334155;
+padding:20px;
+border-radius:18px;
+text-align:center;
+}
+
+footer{
+text-align:center;
+padding:40px;
+color:#94a3b8;
+}
+
+audio{
+width:100%;
+margin-top:15px;
+}
+
+.light{
+background:#f1f5f9;
+color:black;
+}
+
+.light .box,
+.light .script,
+.light .stat{
+background:white;
+color:black;
+}
+
+.light input,
+.light textarea{
+background:#e2e8f0;
+color:black;
+}
+
+@media(max-width:700px){
+.stats{
+grid-template-columns:1fr;
+}
+header h1{
+font-size:34px;
+}
+}
 </style>
-
 </head>
 
 <body>
 
-<!-- MENU -->
-
-<div class="menu-btn" onclick="toggleMenu(event)">
-☰
-</div>
+<div class="menu-btn" onclick="toggleMenu(event)">☰</div>
 
 <div class="sidebar" id="sidebar">
 
-<h1>🌧 Rain Share</h1>
+<h2>🌧 Rain Share</h2>
 
-<button onclick="scrollToBox('top')">
-🏠 Home
-</button>
-
-<button onclick="scrollToBox('shareBox')">
-📤 Share
-</button>
-
-<button onclick="scrollToBox('communityBox')">
-🌍 Scripts
-</button>
-
-<button onclick="logout()">
-🚪 Logout
-</button>
+<button onclick="scrollBox('authBox')">🔐 Login</button>
+<button onclick="scrollBox('shareBox')">📤 Share</button>
+<button onclick="scrollBox('adminScriptsBox')">👑 Admin</button>
+<button onclick="scrollBox('communityScriptsBox')">🌍 Community</button>
+<button onclick="scrollBox('profileBox')">👤 Profile</button>
+<button onclick="toggleTheme()">🌙 Dark/Light</button>
+<button onclick="logout()">🚪 Logout</button>
 
 </div>
 
-<!-- HEADER -->
-
-<header id="top">
-
-<div class="logo">
-<img src="logo.png">
-</div>
+<header>
 
 <h1>🌧 Rain Share</h1>
-
-<p>Community Script Sharing Website</p>
+<p>FULL REAL Optimized Version</p>
 
 </header>
 
-<!-- MAIN -->
-
 <div class="container">
-
-<!-- STATS -->
 
 <div class="stats">
 
@@ -347,649 +268,527 @@ button:hover{
 
 </div>
 
-<!-- AUTH -->
-
 <div class="box" id="authBox">
 
 <h2>🔐 Login</h2>
 
-<input type="text" id="loginUser" placeholder="Username">
+<input type="email" id="loginEmail" placeholder="Email">
 
-<input type="password" id="loginPass" placeholder="Password">
+<input type="password" id="loginPassword" placeholder="Password">
 
-<button onclick="login()">
-Login
-</button>
+<button onclick="login()">Login</button>
 
 <hr style="margin-top:20px;margin-bottom:20px;">
 
 <h2>📝 Register</h2>
 
-<input type="text" id="registerUser" placeholder="Username">
+<input type="text" id="registerUsername" placeholder="Username">
 
-<input type="password" id="registerPass" placeholder="Password">
+<input type="email" id="registerEmail" placeholder="Email">
 
-<button onclick="register()">
-Register
-</button>
+<input type="password" id="registerPassword" placeholder="Password">
+
+<button onclick="register()">Register</button>
 
 </div>
 
-<!-- MAIN UI -->
-
-<div id="mainBox" class="hidden">
+<div class="hidden" id="mainBox">
 
 <div class="box">
 
-<input
-type="text"
-id="search"
-placeholder="🔎 Search script..."
-onkeyup="searchScript()">
+<input type="text" id="search" placeholder="🔎 Search realtime..." onkeyup="searchScripts()">
 
 </div>
-
-<!-- SHARE -->
 
 <div class="box" id="shareBox">
 
 <h2>📤 Share Script</h2>
 
-<input type="text" id="title" placeholder="Script title">
+<select id="shareType">
+<option value="community">🌍 Community Share</option>
+<option value="admin">👑 Admin Share</option>
+</select>
+
+<input type="text" id="title" placeholder="Title">
 
 <input type="text" id="keywords" placeholder="Keywords">
 
 <textarea id="description" placeholder="Description"></textarea>
 
-<textarea id="content" placeholder="Paste script here"></textarea>
+<textarea id="content" placeholder="Script"></textarea>
 
-<input type="text" id="image" placeholder="Image URL (optional)">
+<input type="file" id="image">
 
-<input type="text" id="file" placeholder="File URL (optional)">
+<input type="file" id="file">
 
-<select id="type">
+<button onclick="shareScript()">Share Script</button>
 
-<option value="community">
-🌍 Community Share
-</option>
-
-<option value="admin">
-👑 Admin Share
-</option>
-
-</select>
-
-<button onclick="shareScript()">
-Share Script
-</button>
+<audio controls loop>
+<source src="music.mp3">
+</audio>
 
 </div>
 
-<!-- ADMIN -->
+<div class="box" id="profileBox">
 
-<div class="box">
+<h2>👤 Profile</h2>
 
-<h2>👑 Admin Share</h2>
+<p id="profileName"></p>
+<p id="profileEmail"></p>
+<p id="profileVerify"></p>
+
+<button onclick="verifyEmail()">📧 Verify Email</button>
+
+</div>
+
+<div class="box" id="adminScriptsBox">
+
+<h2>👑 Admin Scripts</h2>
 
 <div id="adminScripts"></div>
 
 </div>
 
-<!-- COMMUNITY -->
+<div class="box" id="communityScriptsBox">
 
-<div class="box" id="communityBox">
-
-<h2>🌍 Community Share</h2>
+<h2>🌍 Community Scripts</h2>
 
 <div id="communityScripts"></div>
 
 </div>
 
+<div class="box">
+
+<h2>ℹ️ About</h2>
+
+<p>Rain Share là website share script hiện đại dành cho cộng đồng Roblox.</p>
+
+</div>
+
+<div class="box">
+
+<h2>📜 Terms</h2>
+
+<p>Không upload virus, scam hoặc file độc hại.</p>
+
 </div>
 
 </div>
 
-<!-- FOOTER -->
+</div>
 
-<div class="footer">
+<footer>
 Rain Share © 2026
-</div>
+</footer>
 
 <script>
 
-/* FIREBASE */
-
 const firebaseConfig = {
-
-    databaseURL:
-    "https://rain-share-default-rtdb.firebaseio.com/"
-
+  apiKey: "AIzaSyBeAAxMH9Z4LgUGpv_w8rhhLFfHykuc-vs",
+  authDomain: "rain-share.firebaseapp.com",
+  databaseURL: "https://rain-share-default-rtdb.firebaseio.com",
+  projectId: "rain-share",
+  storageBucket: "rain-share.firebasestorage.app",
+  messagingSenderId: "521377818281",
+  appId: "1:521377818281:web:a91156aff832c0d2a9abb8",
+  measurementId: "G-FZT51JLJTE"
 };
 
 firebase.initializeApp(firebaseConfig);
 
+const auth = firebase.auth();
 const db = firebase.database();
-
-/* ADMIN */
-
-const ADMIN_USERNAME = "HCROBLOX";
-
-/* HASHED PASSWORD */
-
-const ADMIN_PASSWORD_HASH =
-"0a45d9f4d12f7c6a1e8b1d1f0b2f9f7d8a2c6f3e4b5a7d9e1c2f4a6b8d0e9f1";
-
-/* USERS */
-
-let users = [];
-
-let currentUser =
-JSON.parse(localStorage.getItem("currentUser"));
-
-/* CREATE ADMIN */
-
-db.ref("users/" + ADMIN_USERNAME)
-.once("value")
-.then(snapshot => {
-
-    if(!snapshot.exists()){
-
-        db.ref("users/" + ADMIN_USERNAME)
-        .set({
-
-            username:ADMIN_USERNAME,
-
-            password:
-            ADMIN_PASSWORD_HASH,
-
-            role:"admin",
-
-            createdAt:Date.now()
-
-        });
-
-    }
-
-});
-
-/* LOAD USERS */
-
-db.ref("users").on("value", snapshot => {
-
-    users = [];
-
-    snapshot.forEach(child => {
-
-        users.push(child.val());
-
-    });
-
-    document.getElementById("userCount")
-    .innerText = users.length;
-
-});
-
-/* REGISTER */
+const storage = firebase.storage();
 
 function register(){
 
-    let user =
-    document.getElementById("registerUser").value.trim();
+let username =
+document.getElementById("registerUsername").value;
 
-    let pass =
-    document.getElementById("registerPass").value;
+let email =
+document.getElementById("registerEmail").value;
 
-    if(!user || !pass){
+let password =
+document.getElementById("registerPassword").value;
 
-        alert("Fill all fields");
-        return;
-    }
+if(!username || !email || !password){
 
-    if(user.length < 3){
-
-        alert("Username too short");
-        return;
-    }
-
-    if(pass.length < 6){
-
-        alert("Password too short");
-        return;
-    }
-
-    let exist = users.find(
-        u => u.username.toLowerCase()
-        === user.toLowerCase()
-    );
-
-    if(exist){
-
-        alert("Username exists");
-        return;
-    }
-
-    db.ref("users/" + user).set({
-
-        username:user,
-
-        password:
-        sha256(pass),
-
-        role:"user",
-
-        createdAt:Date.now()
-
-    });
-
-    alert("Register success");
+alert("Fill all fields");
+return;
 
 }
 
-/* LOGIN */
+auth
+.createUserWithEmailAndPassword(email,password)
+
+.then((cred)=>{
+cred.user.sendEmailVerification();
+cred.user.updateProfile({
+displayName:username
+});
+
+alert("Register success");
+
+})
+
+.catch(err=>{
+
+alert(err.message);
+
+});
+
+}
 
 function login(){
 
-    let user =
-    document.getElementById("loginUser").value.trim();
+let email =
+document.getElementById("loginEmail").value;
 
-    let pass =
-    sha256(
-        document.getElementById("loginPass").value
-    );
+let password =
+document.getElementById("loginPassword").value;
 
-    let found = users.find(
-        u =>
-        u.username === user &&
-        u.password === pass
-    );
+auth
+.signInWithEmailAndPassword(email,password)
 
-    if(!found){
+.catch(err=>{
 
-        alert("Wrong account");
-        return;
-    }
+alert(err.message);
 
-    currentUser = found;
-
-    localStorage.setItem(
-        "currentUser",
-        JSON.stringify(found)
-    );
-
-    loadUI();
+});
 
 }
-
-/* LOGOUT */
 
 function logout(){
 
-    localStorage.removeItem("currentUser");
-
-    location.reload();
+auth.signOut();
 
 }
 
-/* UI */
+function verifyEmail(){
 
-function loadUI(){
+let user = auth.currentUser;
 
-    if(currentUser){
+user.sendEmailVerification()
+.then(()=>{
 
-        document.getElementById("authBox")
-        .classList.add("hidden");
+alert("Verification email sent");
 
-        document.getElementById("mainBox")
-        .classList.remove("hidden");
-
-    }else{
-
-        document.getElementById("authBox")
-        .classList.remove("hidden");
-
-        document.getElementById("mainBox")
-        .classList.add("hidden");
-
-    }
+});
 
 }
 
-/* SHARE */
+auth.onAuthStateChanged(user=>{
 
-function shareScript(){
+if(user){
 
-    if(!currentUser){
+authBox.classList.add("hidden");
+mainBox.classList.remove("hidden");
 
-        alert("Login first");
-        return;
-    }
+profileName.innerText =
+"👤 " + (user.displayName || "User");
 
-    let title =
-    document.getElementById("title").value.trim();
+profileEmail.innerText =
+"📧 " + user.email;
 
-    let keywords =
-    document.getElementById("keywords").value.trim();
+profileVerify.innerText =
+user.emailVerified
+?
+"✅ Verified"
+:
+"❌ Not verified";
 
-    let description =
-    document.getElementById("description").value.trim();
+db.ref("users/" + user.uid).set({
+username:user.displayName || "User",
+email:user.email
+});
 
-    let content =
-    document.getElementById("content").value.trim();
+}else{
 
-    let image =
-    document.getElementById("image").value.trim();
-
-    let file =
-    document.getElementById("file").value.trim();
-
-    let type =
-    document.getElementById("type").value;
-
-    if(
-        !title ||
-        !keywords ||
-        !description ||
-        !content
-    ){
-
-        alert("Fill required fields");
-        return;
-    }
-
-    if(
-        type === "admin" &&
-        currentUser.role !== "admin"
-    ){
-
-        alert("Only admin");
-        return;
-    }
-
-    let id = Date.now();
-
-    db.ref("scripts/" + id).set({
-
-        id:id,
-        title:title,
-        keywords:keywords,
-        description:description,
-        content:content,
-        image:image,
-        file:file,
-        type:type,
-        author:currentUser.username,
-        likes:0,
-        views:0,
-        createdAt:new Date().toLocaleString()
-
-    });
-
-    alert("Shared");
-
-    document.getElementById("title").value = "";
-    document.getElementById("keywords").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("content").value = "";
-    document.getElementById("image").value = "";
-    document.getElementById("file").value = "";
+authBox.classList.remove("hidden");
+mainBox.classList.add("hidden");
 
 }
 
-/* COPY */
+});
 
-function copyScript(text){
+async function shareScript(){
 
-    navigator.clipboard.writeText(text);
+let type =
+document.getElementById("shareType").value;
 
-    alert("Copied");
+let title =
+document.getElementById("title").value;
 
-}
+let keywords =
+document.getElementById("keywords").value;
 
-/* DELETE */
+let description =
+document.getElementById("description").value;
 
-function deleteScript(id){
+let content =
+document.getElementById("content").value;
 
-    if(!currentUser){
+if(!title || !keywords || !description || !content){
 
-        return;
-    }
-
-    if(currentUser.role !== "admin"){
-
-        alert("Only admin");
-        return;
-    }
-
-    db.ref("scripts/" + id).remove();
+alert("Fill required fields");
+return;
 
 }
 
-/* LIKE */
+let imageFile =
+document.getElementById("image").files[0];
+
+let fileFile =
+document.getElementById("file").files[0];
+
+let imageURL = "";
+let fileURL = "";
+
+if(imageFile){
+
+const imageRef =
+storage.ref(
+"images/" + Date.now() + "_" + imageFile.name
+);
+
+await imageRef.put(imageFile);
+
+imageURL =
+await imageRef.getDownloadURL();
+
+}
+
+if(fileFile){
+
+const fileRef =
+storage.ref(
+"files/" + Date.now() + "_" + fileFile.name
+);
+
+await fileRef.put(fileFile);
+
+fileURL =
+await fileRef.getDownloadURL();
+
+}
+
+let id = Date.now();
+
+db.ref("scripts/" + id).set({
+
+id:id,
+type:type,
+title:title,
+keywords:keywords,
+description:description,
+content:content,
+image:imageURL,
+file:fileURL,
+likes:0,
+views:0,
+author:auth.currentUser.displayName,
+time:new Date().toLocaleString()
+
+});
+
+alert("Script shared");
+
+}
+
+db.ref("scripts").on("value",snapshot=>{
+
+adminScripts.innerHTML = "";
+communityScripts.innerHTML = "";
+
+let total = 0;
+
+snapshot.forEach(child=>{
+
+total++;
+
+let script = child.val();
+
+let html = `
+
+<div class="script">
+
+<h3>${script.title}</h3>
+
+<p>👤 ${script.author}</p>
+
+<p>🏷 ${script.keywords}</p>
+
+<p>🕒 ${script.time}</p>
+
+<p>${script.description}</p>
+
+${script.image ?
+`<img src="${script.image}">`
+:
+``}
+
+<pre>${escapeHTML(script.content)}</pre>
+
+<button class="copy-btn"
+onclick='copyScript(${JSON.stringify(script.content)})'>
+📋 Copy
+</button>
+
+<button class="like-btn"
+onclick='likeScript(${script.id})'>
+❤️ ${script.likes || 0}
+</button>
+
+${auth.currentUser &&
+auth.currentUser.email === "HCROBLOX@gmail.com"
+?
+`
+<button class="delete-btn"
+onclick='deleteScript(${script.id})'>
+🗑 Delete
+</button>
+`
+:
+``}
+
+${script.file ?
+`
+<br>
+<a href="${script.file}" target="_blank">
+<button>⬇ Download File</button>
+</a>
+`
+:
+``}
+
+</div>
+
+`;
+
+if(script.type === "admin"){
+
+adminScripts.innerHTML += html;
+
+}else{
+
+communityScripts.innerHTML += html;
+
+}
+
+});
+
+scriptCount.innerText = total;
+
+});
+
+db.ref("users").on("value",snapshot=>{
+
+userCount.innerText =
+snapshot.numChildren();
+
+});
 
 function likeScript(id){
 
-    db.ref("scripts/" + id)
-    .once("value")
-    .then(snapshot => {
+db.ref("scripts/" + id)
+.once("value")
+.then(snapshot=>{
 
-        let data = snapshot.val();
+let data = snapshot.val();
 
-        db.ref("scripts/" + id + "/likes")
-        .set((data.likes || 0) + 1);
-
-    });
-
-}
-
-/* SEARCH */
-
-function searchScript(){
-
-    let input =
-    document.getElementById("search")
-    .value
-    .toLowerCase();
-
-    let scripts =
-    document.querySelectorAll(".script");
-
-    scripts.forEach(script => {
-
-        if(
-            script.innerText
-            .toLowerCase()
-            .includes(input)
-        ){
-
-            script.style.display = "block";
-
-        }else{
-
-            script.style.display = "none";
-
-        }
-
-    });
-
-}
-
-/* RENDER */
-
-db.ref("scripts").on("value", snapshot => {
-
-    let adminBox =
-    document.getElementById("adminScripts");
-
-    let communityBox =
-    document.getElementById("communityScripts");
-
-    adminBox.innerHTML = "";
-    communityBox.innerHTML = "";
-
-    let total = 0;
-
-    snapshot.forEach(child => {
-
-        total++;
-
-        let script = child.val();
-
-        let html = `
-
-        <div class="script">
-
-            <h3>${escapeHtml(script.title)}</h3>
-
-            <p>👤 ${escapeHtml(script.author)}</p>
-
-            <p>🕒 ${escapeHtml(script.createdAt)}</p>
-
-            <p>🏷 ${escapeHtml(script.keywords)}</p>
-
-            <p>📌 ${escapeHtml(script.description)}</p>
-
-            ${
-                script.image
-                ?
-                `<img src="${script.image}">`
-                :
-                ``
-            }
-
-            <pre>${escapeHtml(script.content)}</pre>
-
-            ${
-                script.file
-                ?
-                `
-                <a href="${script.file}" target="_blank">
-
-                <button>
-                📁 Download File
-                </button>
-
-                </a>
-                `
-                :
-                ``
-            }
-
-            <br>
-
-            <button
-            class="copy-btn"
-            onclick='copyScript(${JSON.stringify(script.content)})'
-            >
-            📋 Copy
-            </button>
-
-            <button
-            class="like-btn"
-            onclick="likeScript(${script.id})"
-            >
-            ❤️ ${script.likes || 0}
-            </button>
-
-            ${
-                currentUser &&
-                currentUser.role === "admin"
-                ?
-                `
-                <button
-                class="delete-btn"
-                onclick="deleteScript(${script.id})"
-                >
-                🗑 Delete
-                </button>
-                `
-                :
-                ``
-            }
-
-        </div>
-
-        `;
-
-        if(script.type === "admin"){
-
-            adminBox.innerHTML += html;
-
-        }else{
-
-            communityBox.innerHTML += html;
-
-        }
-
-    });
-
-    document.getElementById("scriptCount")
-    .innerText = total;
+db.ref("scripts/" + id + "/likes")
+.set((data.likes || 0)+1);
 
 });
 
-/* ESCAPE */
+}
 
-function escapeHtml(text){
+function deleteScript(id){
 
-    return String(text)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+db.ref("scripts/" + id).remove();
 
 }
 
-/* MENU */
+function copyScript(text){
+
+navigator.clipboard.writeText(text);
+
+alert("Copied");
+
+}
+
+function searchScripts(){
+
+let input =
+document.getElementById("search")
+.value.toLowerCase();
+
+document.querySelectorAll(".script")
+.forEach(script=>{
+
+if(
+script.innerText
+.toLowerCase()
+.includes(input)
+){
+
+script.style.display = "block";
+
+}else{
+
+script.style.display = "none";
+
+}
+
+});
+
+}
 
 function toggleMenu(event){
 
-    event.stopPropagation();
+event.stopPropagation();
 
-    document
-    .getElementById("sidebar")
-    .classList
-    .toggle("active");
+sidebar.classList.toggle("active");
 
 }
 
-/* CLOSE MENU */
+document.addEventListener("click",function(e){
 
-document.addEventListener("click", function(e){
+if(
+sidebar.classList.contains("active") &&
+!sidebar.contains(e.target) &&
+!document.querySelector(".menu-btn")
+.contains(e.target)
+){
 
-    let sidebar =
-    document.getElementById("sidebar");
+sidebar.classList.remove("active");
 
-    let menuBtn =
-    document.querySelector(".menu-btn");
-
-    if(
-        !sidebar.contains(e.target) &&
-        !menuBtn.contains(e.target)
-    ){
-
-        sidebar.classList.remove("active");
-
-    }
+}
 
 });
 
-/* SCROLL */
+function scrollBox(id){
 
-function scrollToBox(id){
+document.getElementById(id)
+.scrollIntoView();
 
-    document
-    .getElementById(id)
-    .scrollIntoView();
-
-    document
-    .getElementById("sidebar")
-    .classList
-    .remove("active");
+sidebar.classList.remove("active");
 
 }
 
-loadUI();
+function toggleTheme(){
+
+document.body.classList.toggle("light");
+
+}
+
+function escapeHTML(text){
+
+return String(text)
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;");
+
+}
 
 </script>
 
