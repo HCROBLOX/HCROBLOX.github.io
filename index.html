@@ -1,47 +1,89 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<title>Rain Share - Community Script Sharing</title>
+
+<meta name="description" content="Share and discover scripts with the Rain Share community.">
+
+<meta name="keywords" content="Rain Share, Roblox Script, Script Hub, Share Script">
+
+<meta name="author" content="HCROBLOX">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Rain Share">
+
+<meta property="og:description" content="Community script sharing website">
+
+<meta property="og:type" content="website">
+
+<meta property="og:url" content="https://hcroblox.github.io/Rain-share.github.io/">
+
+<meta property="og:image" content="https://hcroblox.github.io/Rain-share.github.io/logo.png">
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rain Script</title>
+<link rel="icon" type="image/png" href="logo.png">
+
 
 <style>
-
 body{
     margin:0;
-    font-family:Arial;
+    padding:0;
     background:#0f172a;
     color:white;
+    font-family:Arial;
 }
 
 header{
     background:#111827;
-    padding:20px;
+    padding:30px;
     text-align:center;
     border-bottom:3px solid #38bdf8;
 }
 
+.logo{
+    margin-top:10px;
+}
+
+.logo img{
+    width:150px;
+    border-radius:20px;
+    box-shadow:0 0 25px #38bdf8;
+}
+
 header h1{
-    margin:0;
+    margin-top:20px;
+    font-size:40px;
     color:#38bdf8;
 }
 
+header p{
+    color:#cbd5e1;
+    font-size:18px;
+}
+
 .container{
-    max-width:1000px;
+    width:90%;
+    max-width:900px;
     margin:auto;
-    padding:20px;
+    margin-top:30px;
 }
 
 .box{
     background:#1e293b;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:0 0 15px rgba(0,0,0,0.4);
 }
 
-input,
-textarea,
-select{
+h2{
+    color:#38bdf8;
+}
+
+input{
     width:100%;
     padding:12px;
     margin-top:10px;
@@ -49,75 +91,71 @@ select{
     border-radius:10px;
     background:#334155;
     color:white;
-    box-sizing:border-box;
 }
 
 textarea{
-    height:200px;
-    resize:none;
-}
-
-button{
     width:100%;
+    height:120px;
     padding:12px;
     margin-top:10px;
     border:none;
     border-radius:10px;
+    background:#334155;
+    color:white;
+}
+
+button{
+    margin-top:15px;
+    padding:12px 25px;
+    border:none;
+    border-radius:12px;
     background:#38bdf8;
     color:white;
-    font-weight:bold;
+    font-size:16px;
     cursor:pointer;
 }
 
 button:hover{
-    background:#0ea5e9;
+    opacity:0.8;
 }
 
-.script{
-    background:#111827;
-    padding:15px;
+.script-card{
+    background:#334155;
+    padding:20px;
     border-radius:15px;
     margin-top:15px;
 }
 
-.script h3{
+.script-card h3{
+    margin:0;
     color:#38bdf8;
 }
 
-pre{
-    background:black;
-    padding:10px;
-    border-radius:10px;
-    overflow:auto;
+.script-card pre{
     white-space:pre-wrap;
+    margin-top:10px;
+    color:#e2e8f0;
 }
 
-.hidden{
-    display:none;
-}
-
-.copy-btn{
-    background:#22c55e;
-}
-
-.copy-btn:hover{
-    background:#16a34a;
-}
-
-.delete-btn{
-    background:#ef4444;
-}
-
-.delete-btn:hover{
-    background:#dc2626;
-}
-
+.footer{
+    text-align:center;
+    padding:20px;
+    color:#94a3b8;
+}   
 </style>
 </head>
 <body>
 
 <header>
-    <h1>🌧 Rain Script</h1>
+
+<div class="logo">
+<img src="logo.png" width="150">
+</div>
+
+<h1>🌧️ Rain Share</h1>
+
+<p>Community Script Sharing Website</p>
+
 </header>
 
 <div class="container">
