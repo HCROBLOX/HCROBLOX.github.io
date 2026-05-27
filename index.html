@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rain Share FULL REAL</title>
+<title>Rain Share</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -248,7 +248,7 @@ font-size:34px;
 <header>
 
 <h1>🌧 Rain Share</h1>
-<p>FULL REAL Optimized Version</p>
+<p>Up load your script</p>
 
 </header>
 
@@ -836,10 +836,31 @@ display:none;
 </style>
 
 <script>
-document.addEventListener("click", () => {
-const music = document.getElementById("bgMusic");
-music.play();
-}, { once:true });
+<audio id="bgMusic" loop preload="auto" style="display:none;">
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+window.addEventListener("load", () => {
+
+const music =
+document.getElementById("bgMusic");
+
+function playMusic(){
+
+music.volume = 0.5;
+
+music.play().catch(() => {});
+
+document.removeEventListener("click", playMusic);
+
+}
+
+document.addEventListener("click", playMusic);
+
+});
+
 </script>
 </body>
-  </html> 
+  </html>
