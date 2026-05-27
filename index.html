@@ -323,8 +323,8 @@ font-size:34px;
 
 <button onclick="shareScript()">Share Script</button>
 
-<audio controls loop>
-<source src="music.mp3">
+<audio id="bgMusic" loop style="display:none;">
+<source src="music.mp3" type="audio/mpeg">
 </audio>
 
 </div>
@@ -640,7 +640,8 @@ onclick='likeScript(${script.id})'>
 </button>
 
 ${auth.currentUser &&
-auth.currentUser.email === "HCROBLOX@gmail.com"
+auth.currentUser.email &&
+auth.currentUser.email.toLowerCase() === "hcroblox@gmail.com"
 ?
 `
 <button class="delete-btn"
@@ -705,7 +706,29 @@ db.ref("scripts/" + id + "/likes")
 
 function deleteScript(id){
 
-db.ref("scripts/" + id).remove();
+if(
+auth.currentUser &&
+auth.currentUser.email.toLowerCase() === "hcroblox@gmail.com"
+){
+
+db.ref("scripts/" + id)
+.remove()
+.then(()=>{
+
+alert("Deleted");
+
+})
+.catch(err=>{
+
+alert(err.message);
+
+});
+
+}else{
+
+alert("Admin only");
+
+}
 
 }
 
@@ -791,6 +814,32 @@ return String(text)
 }
 
 </script>
+<audio id="bgMusic" autoplay loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
 
+<style>
+#bgMusic{
+display:none;
+}
+</style>
+
+<script>
+<audio id="bgMusic" autoplay loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<style>
+#bgMusic{
+display:none;
+}
+</style>
+
+<script>
+document.addEventListener("click", () => {
+const music = document.getElementById("bgMusic");
+music.play();
+}, { once:true });
+</script>
 </body>
-    </html>
+  </html> 
