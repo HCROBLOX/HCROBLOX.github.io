@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hcroblox.github.io/Rain-share.github.io/sitemap.xml
