@@ -719,7 +719,34 @@ snapshot.numChildren();
 
 });
 
-function likeScript(id){
+async function likeScript(id){
+
+if(!auth.currentUser){
+
+alert("Login required");
+return;
+
+}
+
+const uid =
+auth.currentUser.uid;
+
+const likeRef =
+db.ref(
+"likes/" + id + "/" + uid
+);
+
+const liked =
+await likeRef.once("value");
+
+if(liked.exists()){
+
+alert("You already liked this script");
+return;
+
+}
+
+await likeRef.set(true);
 
 db.ref("scripts/" + id)
 .once("value")
@@ -855,19 +882,8 @@ display:none;
 </style>
 
 <script>
-<audio id="bgMusic" autoplay loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<style>
-#bgMusic{
-display:none;
-}
-</style>
-
-<script>
 <audio id="bgMusic" loop style="display:none;">
-<source src="./music.mp3" type="audio/mpeg">
+<source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -901,6 +917,89 @@ startMusic
 document.addEventListener(
 "click",
 startMusic
+);
+
+async function likeScript(id){
+
+if(!auth.currentUser){
+
+alert("Login required");
+return;
+
+}
+
+const uid =
+auth.currentUser.uid;
+
+const likeRef =
+db.ref(
+"likes/" + id + "/" + uid
+);
+
+const liked =
+await likeRef.once("value");
+
+if(liked.exists()){
+
+alert("You already liked this script");
+return;
+
+}
+
+await likeRef.set(true);
+
+db.ref("scripts/" + id)
+.once("value")
+.then(snapshot=>{
+
+let data = snapshot.val();
+
+db.ref("scripts/" + id + "/likes")
+.set((data.likes || 0)+1);
+
+});
+
+}
+
+function toggleMenu(event){
+
+event.stopPropagation();
+
+document
+.getElementById("sidebar")
+.classList.toggle("active");
+
+}
+
+document.addEventListener(
+"click",
+function(e){
+
+const sidebar =
+document.getElementById(
+"sidebar"
+);
+
+const menuBtn =
+document.querySelector(
+".menu-btn"
+);
+
+if(
+sidebar.classList.contains(
+"active"
+) &&
+!sidebar.contains(e.target) &&
+!menuBtn.contains(e.target)
+){
+
+sidebar.classList.remove(
+"active"
+);
+
+}
+
+}
 );
 
 </script>
