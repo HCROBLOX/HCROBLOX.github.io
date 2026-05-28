@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<link rel="icon"
-href="https://hcroblox.github.io/Rain-share.github.io/logo.png">
-
-<meta property="og:image"
-content="https://hcroblox.github.io/Rain-share.github.io/logo.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rain Share</title>
@@ -154,7 +149,9 @@ align-items:center;
 justify-content:center;
 font-size:28px;
 cursor:pointer;
-z-index:99999;
+z-index:999999999;
+color:white;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
 .sidebar{
@@ -234,7 +231,7 @@ font-size:34px;
 
 <body>
 
-<div class="menu-btn" onclick="toggleMenu(event)">☰</div>
+<div class="menu-btn" id="menuBtn">☰</div>
 
 <div class="sidebar" id="sidebar">
 
@@ -829,21 +826,26 @@ script.style.display = "none";
 
 }
 
-function toggleMenu(event){
+const menuBtn =
+document.getElementById("menuBtn");
 
-event.stopPropagation();
+const sidebar =
+document.getElementById("sidebar");
+
+menuBtn.onclick = function(e){
+
+e.stopPropagation();
 
 sidebar.classList.toggle("active");
 
-}
+};
 
 document.addEventListener("click",function(e){
 
 if(
 sidebar.classList.contains("active") &&
 !sidebar.contains(e.target) &&
-!document.querySelector(".menu-btn")
-.contains(e.target)
+!menuBtn.contains(e.target)
 ){
 
 sidebar.classList.remove("active");
