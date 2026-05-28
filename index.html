@@ -855,20 +855,19 @@ sidebar.classList.toggle("active");
 
 };
 
-document.addEventListener("click",function(e){
+menuBtn.onclick = function(e){
 
-if(
-sidebar.classList.contains("active") &&
-!sidebar.contains(e.target) &&
-!menuBtn.contains(e.target)
-){
+e.stopPropagation();
 
-sidebar.classList.remove("active");
+sidebar.classList.toggle("active");
 
-}
+};
 
-});
+sidebar.onclick = function(e){
 
+e.stopPropagation();
+
+};
 function scrollBox(id){
 
 document.getElementById(id)
